@@ -1,0 +1,22 @@
+.completed {
+    max-width: calc(100% - 20%);
+    /* height: calc(100vh - 70px); */
+    margin: 100px 0 0 20%;
+    box-sizing: border-box;
+    padding-inline: 15px;
+
+}
+
+.completed h2 {
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.completedContainer{
+    width:100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    gap: 15px;
+}

@@ -1,0 +1,18 @@
+.projects{
+    max-width: calc(100% - 20%);
+    /* min-height: calc(100vh - 70px);  */
+    margin: 100px 0 0 20%;
+    box-sizing: border-box;
+    padding-inline: 15px;
+    padding-bottom: 80px;
+    
+}
+.projects h2{
+    font-size: 25px;
+    font-weight: 600;
+}
+.projectsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2%;
+}

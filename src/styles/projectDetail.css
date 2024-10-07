@@ -1,0 +1,191 @@
+.projectDetail {
+    max-width: calc(100% - 20%);
+    margin: 100px 0 0 20%;
+    box-sizing: border-box;
+    padding-inline: 15px;
+}
+
+.projectDetailContainer {
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+}
+
+.projectDetailTitle {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 20px;
+}
+
+.projectCompanyName {
+    font-size: 16px;
+    font-weight: 500;
+    opacity: .8;
+    margin-top: 10px;
+}
+
+.projectDetailContainer>div:nth-child(1) {
+    width: 50%;
+}
+
+.projectDetailContainer>div:nth-child(2) {
+    width: 50%;
+}
+
+.projectDetail h2 {
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+.projectStatus {
+    width: 100%;
+}
+
+.projectStatus div {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.projectStatus div p:nth-child(1) {
+    background-color: #BFDBFE;
+    color: rgb(57, 57, 250);
+    border-radius: 15px;
+    padding: 5px 10px;
+    width: fit-content;
+}
+
+.projectStatus div p:nth-child(2) span {
+    background-color: #3663EB;
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.projectDate {
+    opacity: .8;
+    margin: 40px 0;
+    color: black;
+}
+
+.projectAttachment {
+    display: flex;
+    gap: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.144);
+    border-top: 1px solid rgba(0, 0, 0, 0.144);
+    padding: 15px 0;
+    padding: 10px 10px;
+}
+
+.projectAttachment p span {
+    font-weight: 700;
+}
+
+.projectTeam {
+    margin-top: 40px;
+}
+
+.projectTeam>p {
+    font-size: 16px;
+    opacity: .8;
+    font-weight: 700;
+}
+
+.teamMember {
+    border-top: 1px solid rgba(0, 0, 0, 0.144);
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.teamMember p:nth-child(1) {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.teamMember p:nth-child(2) {
+    opacity: .9;
+    font-weight: 600;
+}
+
+.projectTasks {
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.projectTask {
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.projectTask>div:nth-child(1) {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.projectTask>div:nth-child(1) p {
+    font-size: 18px;
+    opacity: .8;
+    font-weight: 700;
+}
+
+.projectTask>div span {
+    background-color: #E22D48;
+    color: white;
+    border-radius: 15px;
+    padding: 5px 10px;
+    opacity: 1;
+}
+
+.projectTaskCard div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.projectTaskCard div:first-child p {
+
+    opacity: .8;
+}
+
+.projectTaskCard div:first-child span {
+    background-color: #fcf7da;
+    color: #DA792F;
+    opacity: .8;
+}
+
+.projectTaskAddBtn {
+    margin: 20px 0 40px 0;
+    display: flex;
+    gap: 20px;
+}
+
+.projectTaskAddBtn button {
+    background-color: #c6c7c9;
+    color: black;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    padding: 10px 10px;
+    cursor: pointer;
+
+}
+
+.projectTaskAddBtn button:hover {
+    background-color: #D1FAE5;
+}
+
+.projectDesc {
+    padding-inline: 20px;
+}
+
+.projectDesc h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}

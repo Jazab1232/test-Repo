@@ -1,0 +1,41 @@
+.sideNav {
+    width: 20%;
+    display: flex;
+    position: fixed;
+    top: 70px;
+    background-color: #fff;
+    flex-direction: column;
+    gap: 30px;
+    height: calc(100vh - 70px);
+    padding: 40px 0 0 20px;
+    z-index: 100;
+}
+
+.navLink {
+    text-decoration: none;
+    background-color: transparent;
+    color: black;
+    width: 160px;
+    border-radius: 30px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding-inline: 20px;
+    gap: 10px;
+}
+
+.navLink .icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.navLink.active {
+    background-color: #3663EB;
+    color: white;
+}
+
+.navLink:hover {
+    background-color: #D6E4FC;
+    color: blue;
+}

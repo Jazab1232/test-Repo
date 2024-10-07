@@ -1,0 +1,39 @@
+.header{
+    height: 70px;
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 20px;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+
+}
+
+.logo{
+    width: 150px;
+}
+.logo img{
+    width: 100%;
+}
+.navIcons{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.navIcons i{
+    font-size:  20px;
+}
+.profileIcon span{
+    background-color: #3663EB;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+}

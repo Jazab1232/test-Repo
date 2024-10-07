@@ -1,0 +1,91 @@
+.taskCard {
+    width: 32%;
+    height: fit-content;
+    background-color: #fff;
+    padding: 20px 15px;
+    margin: 10px 0 0 0;
+    position: relative;
+}
+
+.taskCardTop {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 10px;
+}
+
+.taskCardTop p {
+    display: flex;
+    gap: 5px;
+    color: blue;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.cardTitle {
+    margin-top: 10px;
+}
+
+.cardTitle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: black;
+    padding: 10px 0;
+}
+
+.cardTitle span {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    background: #275751;
+    border-radius: 50%;
+}
+
+.cardDate p {
+    font-size: 14px;
+    opacity: .8;
+    padding: 0 0 10px 0;
+}
+
+.cardExtraInfo {
+    display: flex;
+    gap: 20px;
+    border-top: 1px solid #0000001e;
+    border-bottom: 1px solid #0000001e;
+    padding: 10px 0;
+    margin: 10px 0;
+}
+
+.cardExtraInfo p {
+    font-size: 14px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.cardExtraInfo p i {
+    font-size: 12px;
+}
+
+.subTaskTitle {
+    margin: 16px 0;
+
+}
+
+.subTaskDate p {
+    font-size: 14px;
+    opacity: .8;
+    margin: 16px 0;
+}
+
+.addSubTask p {
+    display: flex;
+    gap: 20px;
+    color: #045104;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 20px;
+    cursor: pointer;
+}

@@ -1,0 +1,81 @@
+.teams {
+    max-width: calc(100% - 20%);
+    margin: 100px 0 0 20%;
+    box-sizing: border-box;
+    padding-inline: 15px;
+    z-index: 200;
+}
+
+.teamHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.teamHeader p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3663EB;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    gap: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.teamHeader h2 {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.teamsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.teamsTable thead th {
+    padding: 10px;
+    text-align: left;
+}
+
+.teamsTable tbody td {
+    padding: 10px;
+}
+
+.teamsTable thead{
+    border-bottom: 1px solid #ddd;
+}
+.teamsTable tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.teamsTable tbody tr:last-child {
+    border-bottom: none;
+    /* Remove border from the last row */
+}
+.teamBtn{
+    display: flex;
+}
+.teamsTable .editBtn {
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #3763EF;
+}
+.teamsTable .delBtn {
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgb(190, 28, 28);
+    margin-left: 5px;
+}
