@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import '../styles/projectDetail.css';
 import { useLocation } from 'react-router-dom';
-import { AppContext } from '../Components/config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 
 export default function ProjectDetail() {
     const { projects, teamMembers, tasks, setTasks } = useContext(AppContext);

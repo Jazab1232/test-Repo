@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import '../styles/teams.css'
 import AddTeam from '../Components/AddTeam'
-import { AppContext } from '../Components/config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from '../Components/context/AuthContext';
 
 export default function Teams() {

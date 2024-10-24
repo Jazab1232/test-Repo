@@ -4,12 +4,12 @@ import SummaryCard from '../Components/SummaryCard'
 import { AllTaskIcon, SunIcon, ClipboardCheckIcon, ProgressIcon, } from '../Components/Icons.jsx';
 import ProjectCard from '../Components/ProjectCard.jsx';
 import DashTaskCard from '../Components/DashTaskCard'
-import { AppContext } from '../Components/config/AppContext.jsx';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from '../Components/context/AuthContext.jsx';
 
 export default function Dashboard() {
-  const { projects, teamMembers, tasks, setTasks } = useContext(AppContext);
-  const { currentUserUid, setCurrentUserUid } = useContext(AuthContext);
+  const { projects, teamMembers, tasks } = useContext(AppContext);
+  const { currentUserUid } = useContext(AuthContext);
 
   const currenUserProjects = projects.filter((projects) => {
     return projects.selectedTeam.includes(currentUserUid)
@@ -52,7 +52,7 @@ export default function Dashboard() {
   return (
     <div className='dashboard' >
 
-      <h2>Dashboard</h2>
+      <h2>DASHBOARD</h2>
       <div className="summaryBox">
         <SummaryCard
           title="TOTAL TASK"
@@ -85,11 +85,15 @@ export default function Dashboard() {
 
       </div>
       <div className="dashboardContainer">
+
+
+
         <div className="projectCardContainer">
-          {
-            role === 'admin' ? (
-              Array.isArray(projects) && projects.length > 0 ? (
-                projects.map((data) => (
+          <h3>ALL PROJECTS</h3>
+          <div className="dashProjectBox">
+            {
+              (role === 'admin' ? projects : currenUserProjects).length > 0 ? (
+                (role === 'admin' ? projects : currenUserProjects).map((data) => (
                   <ProjectCard
                     key={data.id}
                     id={data.id}
@@ -99,33 +103,24 @@ export default function Dashboard() {
                     dueDate={data.endDate}
                   />
                 ))
-              ) : (
+              ) :
                 <p>No Project Found</p>
-              )
-            ) : (
-              Array.isArray(currenUserProjects) && currenUserProjects.length > 0 ? (
-                currenUserProjects.map((data) => (
-                  <ProjectCard
-                    key={data.id}
-                    id={data.id}
-                    projectName={data.projectName}
-                    companyName={data.companyName}
-                    priority={data.priority}
-                    dueDate={data.endDate}
-                  />
-                ))
-              ) : (
-                <p>No Project Found</p>
-              )
-            )
-          }
+
+            }
+
+          </div>
 
         </div>
+
+
+
+
         <div className="taskCardContainer">
-          {
-            role !== 'admin' ? (
-              currenUserTask.length > 0 ? (
-                currenUserTask.map((data) => (
+          <h3>ALL TASKS</h3>
+          <div className="dashTaskBox">
+            {
+              (role === 'admin' ? tasks : currenUserTask).length > 0 ? (
+                (role === 'admin' ? tasks : currenUserTask).map((data) => (
                   <DashTaskCard
                     key={data.id}
                     title={data.title}
@@ -135,26 +130,13 @@ export default function Dashboard() {
                     priority={data.priority}
                   />
                 ))
-              ) : (
-                <p>No Task Found</p>
               )
-            ) : (
-              tasks.length > 0 ? (
-                tasks.map((data) => (
-                  <DashTaskCard
-                    key={data.id}
-                    title={data.title}
-                    id={data.id}
-                    startDate={data.startDate}
-                    team={data.selectedTeam?.length}
-                    priority={data.priority}
-                  />
-                ))
-              ) : (
+                :
                 <p>No Task Found</p>
-              )
-            )
-          }
+
+            }
+          </div>
+
 
         </div>
       </div>

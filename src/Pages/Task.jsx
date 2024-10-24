@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import '../styles/task.css';
 import TaskCard from '../Components/TaskCard';
 import AddTask from '../Components/AddTask';
-import { AppContext } from '../Components/config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from '../Components/context/AuthContext';
 
 export default function Task() {

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import '../styles/addTask.css'
-import { AppContext } from './config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { doc, setDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 
 export default function AddTask({ ShowAddTask, setShowAddTask }) {
-    const { projects, teamMembers, tasks, setTasks, selectedTaskId, setSelectedTaskId } = useContext(AppContext);
+    const { projects, teamMembers, tasks, setTasks, selectedTaskId } = useContext(AppContext);
     const [title, setTitle] = useState('');
     const [selectedTeam, setSelectedTeam] = useState([]);
     const [priority, setPriority] = useState('');
@@ -20,7 +20,6 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
     console.log(currentTask);
 
     useEffect(() => {
-
         if (currentTask.length != 0) {
             setTitle(currentTask[0].title || '');
             setProject(currentTask[0].projectId || '');
@@ -29,7 +28,6 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
             setStartDate(currentTask[0].startDate || '');
             setStage(currentTask[0].stage || '');
             setEndDate(currentTask[0].endDate || '');
-
         }
     }, [selectedTaskId]);
 
@@ -53,12 +51,31 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
                 return [...prev, newTask]
             })
             alert('Task added successfully!');
+            setTitle('');
+            setEndDate('');
+            setProject('');
+            setSelectedTeam([]);
+            setPriority('');
+            setStage('');
+            setStartDate('');
+            setShowAddTask(false);
+
         } catch (error) {
             console.error('Error adding Task:', error);
             alert('Error adding Task');
         }
     };
 
+    function handleCancel() {
+        setTitle('');
+        setEndDate('');
+        setProject('');
+        setSelectedTeam([]);
+        setPriority('');
+        setStage('');
+        setStartDate('');
+        setShowAddTask(false);
+    }
 
     function handleTeam(e) {
         const selectedValues = [...e.target.selectedOptions].map(option => option.value);
@@ -98,9 +115,11 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
                     </select>
                 </div>
                 <div className="addTaskMember">
-                    <p>Assign Task To: <span> {selectedTeam.join(', ')}</span></p>
+                    <p>Assign Task To: </p>
+                    {/* <span> {selectedTeam.join(', ')}</span> */}
 
                     <select
+                        // multiple
                         value={selectedTeam}
                         onChange={handleTeam} >
                         <option value="">Select Team</option>
@@ -112,7 +131,8 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
                 </div>
                 <div className="addTaskStage">
                     <p>Task Stage:</p>
-                    <select value={stage} onChange={(e) => { setStage(e.target.value) }}>
+                    <select value={stage}
+                        onChange={(e) => { setStage(e.target.value) }}>
                         <option value="">Select Task Stage</option>
                         <option value="Todo">Todo</option>
                         <option value="inProgress">In Progress</option>
@@ -139,7 +159,7 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
                     </div>
                 </div>
                 <div className="addTaskBtn">
-                    <button onClick={() => { setShowAddTask(false) }}>Cancel</button>
+                    <button onClick={handleCancel}>Cancel</button>
                     <button onClick={handleSubmit}>Submit</button>
                 </div>
             </div>

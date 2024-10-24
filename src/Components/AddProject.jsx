@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
 import '../styles/addProject.css';
-import { AppContext } from '../Components/config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { doc, setDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 
 export default function AddProject({ ShowAddProject, setShowAddProject }) {
-    // State to manage all inputs
+
     const [projectName, setProjectName] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [selectedTeam, setSelectedTeam] = useState([]);
@@ -45,15 +45,31 @@ export default function AddProject({ ShowAddProject, setShowAddProject }) {
             }
             await setDoc(doc(firestore, 'projects', projectId), newProject);
             setProjects((prev) => {
-                return [ ...prev, newProject ]
+                return [...prev, newProject]
             })
             alert('Project added successfully!');
+            setProjectName('')
+            setCompanyName('')
+            setSelectedTeam([])
+            setPriority('')
+            setStartDate('')
+            setEndDate('')
+            setShowAddProject(false)
         } catch (error) {
             console.error('Error adding project:', error);
             alert('Error adding Project');
         }
     };
 
+    function handleCancel() {
+        setProjectName('')
+        setCompanyName('')
+        setSelectedTeam([])
+        setPriority('')
+        setStartDate('')
+        setEndDate('')
+        setShowAddProject(false)
+    }
 
     return (
         <div className='addProject' style={{ display: ShowAddProject ? 'flex' : 'none' }}>
@@ -77,7 +93,8 @@ export default function AddProject({ ShowAddProject, setShowAddProject }) {
                         onChange={(e) => setCompanyName(e.target.value)} />
                 </div>
                 <div className="addProjectMember">
-                    <p>Assign Project To:<span>{selectedTeam.join(', ')}</span></p>
+                    <p>Assign Project To:</p>
+                    {/* <span>{selectedTeam.join(', ')}</span> */}
                     <select
 
                         value={selectedTeam}
@@ -124,7 +141,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject }) {
                 </div>
 
                 <div className="addProjectBtn">
-                    <button onClick={() => setShowAddProject(false)}>Cancel</button>
+                    <button onClick={handleCancel}>Cancel</button>
                     <button onClick={handleSubmit}>Submit</button>
                 </div>
             </div>

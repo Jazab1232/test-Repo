@@ -1,18 +1,18 @@
 .dashboard {
 
-    max-width: calc(100% - 20%);
+    max-width: calc(100% - 15%);
     /* height: calc(100vh - 70px); */
-    margin: 100px 0 0 20%;
+    margin: 100px 0 0 15%;
     box-sizing: border-box;
     padding-inline: 15px;
-    
+
     padding-bottom: 80px;
 
 
 }
 
 .dashboard h2 {
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 600;
     margin-bottom: 20px;
 }
@@ -35,9 +35,31 @@
 
 .taskCardContainer {
     width: 65%;
-    margin-top: 20px;
+    /* margin-top: 20px; */
+}
+
+.dashTaskBox {
     display: flex;
     flex-wrap: wrap;
     height: fit-content;
     gap: 2%;
+}
+
+.dashboard h3 {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    background-color: #fff;
+}
+
+@media (max-width:1250px) {
+    .dashboard {
+        max-width: calc(100% - 18%);
+        margin: 100px 0 0 18%;
+        box-sizing: border-box;
+        padding-inline: 15px;
+        padding-bottom: 80px;
+    }
 }

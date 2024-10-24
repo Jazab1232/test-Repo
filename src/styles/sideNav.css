@@ -1,5 +1,5 @@
 .sideNav {
-    width: 20%;
+    width: 15%;
     display: flex;
     position: fixed;
     top: 70px;
@@ -38,4 +38,10 @@
 .navLink:hover {
     background-color: #D6E4FC;
     color: blue;
+}
+
+@media (max-width:1250px) {
+    .sideNav{
+        width: 18%;
+    }
 }

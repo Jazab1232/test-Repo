@@ -10,13 +10,12 @@ import Completed from './Pages/Completed.jsx';
 import Dashboard from './Pages/Dashboard.jsx';
 import Projects from './Pages/Projects.jsx';
 import TaskDetail from './Pages/TaskDetail.jsx';
-import { AppProvider } from './Components/context/AppContext.jsx';
 import { AuthProvider } from './Components/context/AuthContext.jsx';
 import Teams from './Pages/Teams.jsx';
 import ProjectDetail from './Pages/ProjectDetail.jsx';
 import Login from './Pages/Login.jsx';
 import PrivateRoute from './Components/PrivateRoute .jsx';
-
+import { AppProvider } from '../src/Components/context/AppContext.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,12 +23,12 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Navigate to="/dashboard" replace />,  // Redirect from "/" to "/dashboard"
+        element: <Navigate to="/dashboard" replace />,
       },
       {
         path: "/dashboard",
         element: (
-          <PrivateRoute> {/* Wrap protected routes with PrivateRoute */}
+          <PrivateRoute>
             <Dashboard />
           </PrivateRoute>
         ),

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import '../styles/addSubTask.css'
-import { AppContext } from './config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { doc, setDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 

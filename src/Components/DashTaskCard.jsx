@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import '../styles/dashTaskCard.css'
 import '../styles/cardMenu.css'
 import { Link } from 'react-router-dom'
-import { AppContext } from './config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { firestore } from './config/config';
 

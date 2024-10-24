@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './Components/Header';
 import './App.css';
 import SideNav from './Components/SideNav';
-import { AppProvider } from './Components/config/AppContext';
+import { AppProvider } from './Components/context/AppContext';
 
 function App() {
   return (

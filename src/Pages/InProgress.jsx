@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import '../styles/completed.css'
 import TaskCard from '../Components/TaskCard'
-import { AppContext } from '../Components/config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from '../Components/context/AuthContext';
 
 export default function completed() {
@@ -31,10 +31,10 @@ export default function completed() {
   return (
     <div className='completed'>
       <h2>In Progress</h2>
-      <div className="taskHeader">
+      {/* <div className="taskHeader">
         <p><span style={{ backgroundColor: '#EE9D1E' }}></span>In Progress</p>
         <i class="fa-solid fa-plus"></i>
-      </div>
+      </div> */}
       <div className="completedContainer">
         {
           role !== 'admin' ? (

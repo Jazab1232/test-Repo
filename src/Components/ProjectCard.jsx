@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react'
 import '../styles/projectCard.css'
 import { Link } from 'react-router-dom';
-import { AppContext } from './config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 
 export default function ProjectCard({ projectName, priority, dueDate, companyName, width, id }) {
 
-    const { setSelectedTaskId, selectedTaskId } = useContext(AppContext);
+    const { setSelectedTaskId, selectedTaskId, projects,setProjects } = useContext(AppContext);
     const [menuVisible, setMenuVisible] = useState(false);
 
     const toggleMenu = () => {
@@ -13,6 +13,14 @@ export default function ProjectCard({ projectName, priority, dueDate, companyNam
         setMenuVisible(!menuVisible);
     };
 
+    function deleteProject(id) {
+        console.log(id);
+        let filterProjects = projects.filter((data) => {
+            return data.id != id
+        })
+        setProjects(filterProjects)
+
+    }
     return (
         <div className='projectCard' style={{ width: width }}>
             <div className="projectCardHead">
@@ -37,8 +45,8 @@ export default function ProjectCard({ projectName, priority, dueDate, companyNam
                 <p><i className="fa-solid fa-plus" style={{ marginRight: '10px' }} ></i>ADD TASK</p>
             </div> */}
             <div className="cardMenu" style={{ display: menuVisible ? 'flex' : 'none' }}>
-                <button className="cardMenuEdit">Edit</button>
-                <button className="cardMenuDel">Delete</button>
+                <button style={{ color: 'blue' }} className="cardMenuEdit">View</button>
+                <button style={{ color: 'red' }} className="cardMenuDel" onClick={() => { deleteProject(id) }}>Delete</button>
             </div>
         </div>
     )

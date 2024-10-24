@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import '../styles/taskCard.css';
 import { Link } from 'react-router-dom';
-import { AppContext } from './config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import AddSubTask from './AddSubTask';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { firestore } from './config/config';
@@ -89,8 +89,8 @@ export default function TaskCard({ startDate, title, team, priority, id }) {
                         onClick={handleAddSubtaskClick}><i className="fa-solid fa-plus"></i>ADD SUBTASK</button>
                 </div>
                 <div className="cardMenu" style={{ display: menuVisible ? 'flex' : 'none' }}>
-                    <button className="cardMenuEdit" onClick={handleEdit}>Edit</button>
-                    <button className="cardMenuDel" onClick={handleDelete}>Delete</button>
+                    <button style={{color:'blue'}} className="cardMenuEdit" onClick={handleEdit}>Edit</button>
+                    <button style={{color:'red'}} className="cardMenuDel" onClick={handleDelete}>Delete</button>
                 </div>
             </div>
 

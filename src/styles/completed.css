@@ -1,7 +1,7 @@
 .completed {
-    max-width: calc(100% - 20%);
+    max-width: calc(100% - 15%);
     /* height: calc(100vh - 70px); */
-    margin: 100px 0 0 20%;
+    margin: 100px 0 0 15%;
     box-sizing: border-box;
     padding-inline: 15px;
 

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import '../styles/project.css'
 import ProjectCard from '../Components/ProjectCard.jsx';
 import AddProject from '../Components/AddProject.jsx';
-import { AppContext } from '../Components/config/AppContext.jsx';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from '../Components/context/AuthContext.jsx';
 
 export default function Projects() {
@@ -31,45 +31,27 @@ export default function Projects() {
                 <h2> Projects </h2>
                 <p style={{ display: role == 'admin' ? 'flex' : 'none' }} onClick={() => { setShowAddProject(true) }} ><i className="fa-solid fa-plus"></i> Add Project</p>
             </div>
-            <div className="taskHeader">
+            {/* <div className="taskHeader">
                 <p><span style={{ backgroundColor: '#3663EB' }}></span>Projects</p>
                 <i className="fa-solid fa-plus"></i>
-            </div>
+            </div> */}
             <div className="projectsContainer">
                 {
-                    role === 'admin' ? (
-                        Array.isArray(projects) && projects.length > 0 ? (
-                            projects.map((data) => (
-                                <ProjectCard
-                                    key={data.id}
-                                    id={data.id}
-                                    projectName={data.projectName}
-                                    companyName={data.companyName}
-                                    priority={data.priority}
-                                    dueDate={data.endDate}
-                                    width={'32%'}
-                                />
-                            ))
-                        ) : (
-                            <p>No Project Found</p>
-                        )
-                    ) : (
-                        Array.isArray(projects) && projects.length > 0 ? (
-                            projects.map((data) => (
-                                <ProjectCard
-                                    key={data.id}
-                                    id={data.id}
-                                    projectName={data.projectName}
-                                    companyName={data.companyName}
-                                    priority={data.priority}
-                                    dueDate={data.endDate}
-                                    width={'32%'}
-                                />
-                            ))
-                        ) : (
-                            <p>No Project Found</p>
-                        )
-                    )
+                    (role === 'admin' ? projects : currenUserProjects).length > 0 ? (
+                        (role === 'admin' ? projects : currenUserProjects).map((data) => (
+                            <ProjectCard
+                                key={data.id}
+                                id={data.id}
+                                projectName={data.projectName}
+                                companyName={data.companyName}
+                                priority={data.priority}
+                                dueDate={data.endDate}
+                                width={'32%'}
+                            />
+                        ))
+                    ) :
+                        <p>No Project Found</p>
+
                 }
 
             </div>

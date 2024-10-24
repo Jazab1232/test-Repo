@@ -14,15 +14,8 @@ export const AppProvider = ({ children }) => {
     const [showAddSubtask, setShowAddSubtask] = useState(false)
     const [selectedTaskId, setSelectedTaskId] = useState(null);
     const [ShowAddTask, setShowAddTask] = useState(false);
-    const [userRole, setUserRole] = useState(false);
-
-    const { currentUserUid } = useContext(AuthContext);
-
-    let currentUserRole = teamMembers.filter((member) => {
-        return member.uid == currentUserUid
-    })
-console.log(currentUserRole);
-
+    const [userRole, setUserRole] = useState(null);
+   
 
 
     useEffect(() => {

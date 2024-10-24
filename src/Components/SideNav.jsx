@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import '../styles/sideNav.css';
 import { NavLink } from 'react-router-dom';
 import { TeamIcon, DashboardIcon, ProgressIcon, TaskIcon, CheckIcon, ProjectIcon } from '../Components/Icons.jsx';
-import { AppContext } from './config/AppContext.jsx';
+
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from './context/AuthContext.jsx';
 
 export default function SideNav() {

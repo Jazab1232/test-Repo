@@ -1,6 +1,6 @@
 .teams {
-    max-width: calc(100% - 20%);
-    margin: 100px 0 0 20%;
+    max-width: calc(100% - 15%);
+    margin: 100px 0 0 15%;
     box-sizing: border-box;
     padding-inline: 15px;
     z-index: 200;

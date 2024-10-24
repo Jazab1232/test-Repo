@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import '../styles/taskDetail.css'
 import { useLocation } from 'react-router-dom';
-import { AppContext } from '../Components/config/AppContext';
+import { AppContext } from '../Components/context/AppContext.jsx';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../Components/config/config';
 
 export default function TaskDetail() {
 
-  const { tasks, subtasks, projects, teamMembers,setSubtasks } = useContext(AppContext);
+  const { tasks, setTasks, subtasks, projects, teamMembers, setSubtasks } = useContext(AppContext);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const taskId = queryParams.get('id');
@@ -51,6 +51,29 @@ export default function TaskDetail() {
       alert('Error updating subtask stage');
     }
   };
+
+  async function completeTask(newStage) {
+    try {
+      const taskDoc = doc(firestore, 'tasks', taskId);
+      await updateDoc(taskDoc, { stage: newStage });
+
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => {
+          if (task.id === taskId) {
+            return { ...task, stage: newStage };
+          }
+          return task;
+        })
+      );
+      alert(`Task marked as ${newStage}`);
+    } catch (error) {
+      console.error('Error updating task stage:', error);
+      alert('Error updating task stage');
+    }
+  }
+
+
+
   return (
     <div className='taskDetail'>
       <h2>Task Details</h2>
@@ -77,7 +100,11 @@ export default function TaskDetail() {
                 <p>{member.role}</p>
               </div>
             })}
-
+            <div className="completeTaskBtnContainer">
+              <button className="completeTaskBtn" onClick={() => { completeTask('completed') }}>
+                Complete Task
+              </button>
+            </div>
           </div>
           <div className="subTask">
             <div>
