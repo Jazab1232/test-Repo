@@ -7,9 +7,7 @@ import { AuthContext } from '../Components/context/AuthContext';
 
 export default function Task() {
     const { tasks, ShowAddTask, setShowAddTask, teamMembers, setTeamMembers } = useContext(AppContext);
-
     const { currentUserUid, setCurrentUserUid } = useContext(AuthContext);
-
     const currenUserTask = tasks.filter((task) => {
         return task.selectedTeam.includes(currentUserUid)
     })

@@ -133,6 +133,10 @@
     opacity: 1;
 }
 
+.subTaskCard{
+    border-top: 1px solid rgba(0, 0, 0, 0.186);
+    padding-top: 20px ;
+}
 .subTaskCard div:first-child {
     display: flex;
     align-items: center;
@@ -183,5 +187,8 @@
 .subtaskTitle{
     font-weight: 600;
     /* font-size: 14px; */
+    margin-top: 20px;
+}
+.completeTaskBtnContainer{
     margin-top: 20px;
 }

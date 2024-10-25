@@ -1,17 +1,24 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import '../styles/projectDetail.css';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AppContext } from '../Components/context/AppContext.jsx';
+import { doc, updateDoc } from 'firebase/firestore';
+import { firestore } from '../Components/config/config.js';
+import { ClipLoader } from 'react-spinners';
 
 export default function ProjectDetail() {
+
+    const [loading, setLoading] = useState(false)
     const { projects, teamMembers, tasks, setTasks } = useContext(AppContext);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const projectId = queryParams.get('id');
 
     const currentProject = useMemo(() => {
-        return projects.filter((project) => project.id === projectId);
+        return projects.find((project) => project.id === projectId);
     }, [projects, projectId]);
+
+    console.log(currentProject);
 
     if (currentProject.length === 0) {
         return (
@@ -22,7 +29,7 @@ export default function ProjectDetail() {
     }
 
     const currentTeam = useMemo(() => {
-        return currentProject[0].selectedTeam.map((id) => {
+        return currentProject.selectedTeam.map((id) => {
             return teamMembers.find((member) => member.id === id);
         });
     }, [currentProject, teamMembers]);
@@ -31,14 +38,21 @@ export default function ProjectDetail() {
         return tasks.filter((task) => task.projectId === projectId);
     }, [tasks, projectId]);
 
-    const markAsDone = (taskId, stage) => {
+
+    const markAsDone = async (taskId, newStage) => {
+        setLoading(true)
+        const taskDoc = doc(firestore, 'tasks', taskId);
+        await updateDoc(taskDoc, { stage: newStage });
         const updatedTasks = tasks.map((task) => {
             if (task.id === taskId) {
-                return { ...task, stage: stage }; // Update the stage to the passed value
+                return { ...task, stage: newStage };
             }
             return task;
         });
-        setTasks(updatedTasks); // Update the tasks in context
+
+        alert('Task Updated Successfully')
+        setLoading(false)
+        setTasks(updatedTasks);
     };
 
     return (
@@ -48,13 +62,13 @@ export default function ProjectDetail() {
                 <div>
                     <div className="projectStatus">
                         <div>
-                            <p>{currentProject[0].priority}</p>
+                            <p style={{ textTransform: 'uppercase' }}>{currentProject.priority} priority</p>
                             <p><span></span>ONGOING</p>
                         </div>
                     </div>
-                    <p className='projectDetailTitle'>{currentProject[0].projectName}</p>
-                    <p className='projectCompanyName'>{currentProject[0].companyName}</p>
-                    <p className='projectDate'><span>Created At: </span>{currentProject[0].startDate}</p>
+                    <p className='projectDetailTitle'>{currentProject.projectName}</p>
+                    <p className='projectCompanyName'>{currentProject.companyName}</p>
+                    <p className='projectDate'><span>Created At: </span>{currentProject.startDate}</p>
                     <div className="projectAttachment">
                         <p><span>Assets: </span>3</p>
                         <span>|</span>
@@ -80,11 +94,27 @@ export default function ProjectDetail() {
                                     <span>{task.stage}</span>
                                 </div>
                                 <div className="projectTaskTitle">
-                                    <p>{task.title}</p>
+                                    <Link
+                                        to={`/task-detail?id=${task.id}`}
+                                        style={{ textDecoration: 'none', color: 'black', fontSize: '18px', fontWeight: '600' }} >
+                                        {task.title}
+                                    </Link>
                                 </div>
                                 <div className="projectTaskAddBtn">
-                                    <button onClick={() => markAsDone(task.id, 'completed')}>Mark As Done</button>
-                                    <button onClick={() => markAsDone(task.id, 'inProgress')}>In Progress</button>
+                                    <button onClick={() => markAsDone(task.id, 'completed')}>
+                                        {loading ? (
+                                            <ClipLoader color="#ffffff" loading={loading} size={20} />
+                                        ) : (
+                                            "Mark As Done"
+                                        )}
+                                    </button>
+                                    <button onClick={() => markAsDone(task.id, 'inProgress')}>
+                                        {loading ? (
+                                            <ClipLoader color="#ffffff" loading={loading} size={20} />
+                                        ) : (
+                                            "In Progress"
+                                        )}
+                                    </button>
                                 </div>
                             </div>
                         ))}

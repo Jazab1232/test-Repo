@@ -3,10 +3,28 @@ import '../styles/teams.css'
 import AddTeam from '../Components/AddTeam'
 import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from '../Components/context/AuthContext';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { firestore } from '../Components/config/config.js';
+import { ClipLoader } from 'react-spinners';
 
 export default function Teams() {
+
+  const [loading, setLoading] = useState(false)
   const [showAddTeam, setShowAddTeam] = useState(false);
   const { teamMembers, setTeamMembers } = useContext(AppContext);
+
+  async function handleDelete(id) {
+    try {
+      setLoading(true)
+      await deleteDoc(doc(firestore, 'users', id));
+      setTeamMembers((prevMembers) => prevMembers.filter(member => member.uid !== id));
+      alert('Member deleted successfully!');
+      setLoading(false)
+    } catch (error) {
+      console.error('Error deleting member:', error);
+      alert('Error deleting member');
+    }
+  }
 
   return (
     <div className='teams'>
@@ -42,8 +60,13 @@ export default function Teams() {
                   <td>{data.role}</td>
                   <td >
                     <p className='teamBtn'>
-                      <button className='editBtn'>Edit</button>
-                      <button className='delBtn'>Delete</button>
+                      <button className='delBtn' onClick={() => { handleDelete(data.uid) }}>
+                        {loading ? (
+                          <ClipLoader color="#ffffff" loading={loading} size={20} />
+                        ) : (
+                          "Delete"
+                        )}
+                      </button>
                     </p>
                   </td>
                 </tr>

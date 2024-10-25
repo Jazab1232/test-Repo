@@ -80,3 +80,13 @@
      height: 13px;
      border-radius: 50%;
  }
+
+@media (max-width:1250px) {
+    .task {
+        max-width: calc(100% - 18%);
+        margin: 100px 0 0 18%;
+        box-sizing: border-box;
+        padding-inline: 15px;
+        padding-bottom: 80px;
+    }
+}

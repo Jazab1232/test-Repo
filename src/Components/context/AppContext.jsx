@@ -1,9 +1,7 @@
 import { collection, getDocs } from 'firebase/firestore';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import React, { createContext, useEffect, useState } from 'react';
 import { firestore } from '../config/config';
 
-// Create a Context
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
@@ -15,8 +13,8 @@ export const AppProvider = ({ children }) => {
     const [selectedTaskId, setSelectedTaskId] = useState(null);
     const [ShowAddTask, setShowAddTask] = useState(false);
     const [userRole, setUserRole] = useState(null);
-   
-
+    const [loading, setLoading] = useState(true);
+console.log(teamMembers);
 
     useEffect(() => {
         const fetchTeamMembers = async () => {
@@ -42,6 +40,7 @@ export const AppProvider = ({ children }) => {
                     id: doc.id,
                     ...doc.data(),
                 }));
+                setLoading(false)
                 setTasks(taskData);
             } catch (error) {
                 console.error('Error fetching Tasks:', error);
@@ -89,7 +88,8 @@ export const AppProvider = ({ children }) => {
             tasks, setTasks,
             showAddSubtask, setShowAddSubtask,
             selectedTaskId, setSelectedTaskId,
-            ShowAddTask, setShowAddTask
+            ShowAddTask, setShowAddTask,
+            loading
         }}>
             {children}
         </AppContext.Provider>

@@ -6,29 +6,33 @@ import { auth } from '../Components/config/config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Components/context/AuthContext';
+import { ClipLoader } from 'react-spinners';
 
 export default function Login() {
+    const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { currentUser,setCurrentUser } = useContext(AuthContext);
+    const { currentUser, setCurrentUser } = useContext(AuthContext);
 
     useEffect(() => {
         if (currentUser) {
             const timer = setTimeout(() => {
                 navigate('/dashboard');
             }, 0);
-            return () => clearTimeout(timer); // Clean up the timer on unmount
+            return () => clearTimeout(timer);
         }
     }, [currentUser, navigate]);
-    
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true)
             await signInWithEmailAndPassword(auth, email, password);
+            setLoading(false)
             navigate('/dashboard');
-            
+
         } catch (error) {
             console.error('Error logging in:', error.message);
         }
@@ -59,7 +63,11 @@ export default function Login() {
                     />
                 </div>
                 <button onClick={handleLogin} type="submit">
-                    Login
+                    {loading ? (
+                        <ClipLoader color="#ffffff" loading={loading} size={20} />
+                    ) : (
+                        "Login"
+                    )}
                 </button>
             </div>
         </div>

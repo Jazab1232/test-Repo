@@ -46,9 +46,10 @@
     padding: 10px;
 }
 
-.teamsTable thead{
+.teamsTable thead {
     border-bottom: 1px solid #ddd;
 }
+
 .teamsTable tbody tr {
     border-bottom: 1px solid #ddd;
 }
@@ -57,9 +58,11 @@
     border-bottom: none;
     /* Remove border from the last row */
 }
-.teamBtn{
+
+.teamBtn {
     display: flex;
 }
+
 .teamsTable .editBtn {
     border: none;
     outline: none;
@@ -69,6 +72,7 @@
     border-radius: 5px;
     background-color: #3763EF;
 }
+
 .teamsTable .delBtn {
     border: none;
     outline: none;
@@ -78,4 +82,14 @@
     border-radius: 5px;
     background-color: rgb(190, 28, 28);
     margin-left: 5px;
+}
+
+@media (max-width:1250px) {
+    .teams {
+        max-width: calc(100% - 18%);
+        margin: 100px 0 0 18%;
+        box-sizing: border-box;
+        padding-inline: 15px;
+        padding-bottom: 80px;
+    }
 }

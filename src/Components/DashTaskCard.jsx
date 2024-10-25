@@ -5,10 +5,23 @@ import { Link } from 'react-router-dom'
 import { AppContext } from '../Components/context/AppContext.jsx';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { firestore } from './config/config';
+import { AuthContext } from './context/AuthContext.jsx';
 
 export default function TaskCard({ startDate, title, priority, team, id }) {
-    const { setSelectedTaskId, selectedTaskId, tasks, setTasks } = useContext(AppContext);
+    const { setSelectedTaskId, selectedTaskId, tasks, setTasks, teamMembers } = useContext(AppContext);
+    const { currentUserUid, setCurrentUserUid } = useContext(AuthContext);
     const [menuVisible, setMenuVisible] = useState(false);
+
+    let role;
+    let currentUserRole = teamMembers.find((member) => {
+        return member.uid == currentUserUid
+    })
+
+    if (currentUserRole && currentUserRole.role) {
+        role = currentUserRole.role
+    } else {
+        console.log('Role is undefined or object not loaded');
+    }
 
     const toggleMenu = () => {
         setSelectedTaskId(id);
@@ -60,8 +73,10 @@ export default function TaskCard({ startDate, title, priority, team, id }) {
                     <p ><i className="fa-solid fa-plus"></i>ADD SUBTASK</p>
                 </div>
                 <div className="cardMenu" style={{ display: menuVisible ? 'flex' : 'none' }}>
-                    <button className="cardMenuEdit">Edit</button>
-                    <button className="cardMenuDel" onClick={handleDelete}>Delete</button>
+                    <Link to={`/task-detail?id=${id}`} style={{ color: 'blue', textDecoration: 'none', marginBottom: '20px' }} className="cardMenuEdit" >View</Link>
+                    {role == 'admin' && (
+                        <button style={{ color: 'red' }} className="cardMenuDel" onClick={handleDelete}>Delete</button>
+                    )}
                 </div>
             </div>
         </div>

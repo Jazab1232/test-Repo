@@ -1,12 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import '../styles/taskDetail.css'
 import { useLocation } from 'react-router-dom';
 import { AppContext } from '../Components/context/AppContext.jsx';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../Components/config/config';
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function TaskDetail() {
-
+  const [loading, setLoading] = useState(false)
   const { tasks, setTasks, subtasks, projects, teamMembers, setSubtasks } = useContext(AppContext);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -33,6 +34,7 @@ export default function TaskDetail() {
 
 
   const updateSubtaskStage = async (subtaskId, newStage) => {
+    setLoading(true)
     try {
       const subtaskDoc = doc(firestore, 'subtasks', subtaskId);
       await updateDoc(subtaskDoc, { stage: newStage }); // Update stage in Firestore
@@ -46,6 +48,7 @@ export default function TaskDetail() {
       }));
 
       alert(`Subtask marked as ${newStage}`);
+      setLoading(false)
     } catch (error) {
       console.error('Error updating subtask stage:', error);
       alert('Error updating subtask stage');
@@ -53,6 +56,7 @@ export default function TaskDetail() {
   };
 
   async function completeTask(newStage) {
+    setLoading(true)
     try {
       const taskDoc = doc(firestore, 'tasks', taskId);
       await updateDoc(taskDoc, { stage: newStage });
@@ -66,6 +70,7 @@ export default function TaskDetail() {
         })
       );
       alert(`Task marked as ${newStage}`);
+      setLoading(false)
     } catch (error) {
       console.error('Error updating task stage:', error);
       alert('Error updating task stage');
@@ -82,7 +87,7 @@ export default function TaskDetail() {
           <div className="taskStatus">
             <div>
               <p style={{ textTransform: 'uppercase' }}>{currentTask.priority} PRIORITY</p>
-              <p><span></span>{currentTask.stage}</p>
+              <p style={{ textTransform: 'capitalize' }}><span></span>{currentTask.stage}</p>
             </div>
             <p className='detailTaskTitle'>{currentTask.title}</p>
             <p><span>Created At: </span>{currentTask.startDate}</p>
@@ -102,14 +107,19 @@ export default function TaskDetail() {
             })}
             <div className="completeTaskBtnContainer">
               <button className="completeTaskBtn" onClick={() => { completeTask('completed') }}>
-                Complete Task
+                {loading ? (
+                  <ClipLoader color="#ffffff" loading={loading} size={20} />
+                ) : (
+                  "Complete Task"
+                )}
+
               </button>
             </div>
           </div>
           <div className="subTask">
             <div>
               <p>SUB TASK </p>
-              <span style={{ opacity: '1' }}>50.00%</span>
+              {/* <span style={{ opacity: '1' }}>50.00%</span> */}
             </div>
             {currentSubtasks.map((sub) => {
               return <div className="subTaskCard">
@@ -121,8 +131,21 @@ export default function TaskDetail() {
                   <p>{sub.subtaskTitle}</p>
                 </div>
                 <div className="subTaskAddBtn">
-                  <button onClick={() => updateSubtaskStage(sub.id, 'Completed')}>Mark As Done</button>
-                  <button onClick={() => updateSubtaskStage(sub.id, 'In Progress')}>In Progress</button>
+                  <button 
+                  onClick={() => updateSubtaskStage(sub.id, 'Completed')}>
+                    {loading ? (
+                  <ClipLoader color="#ffffff" loading={loading} size={20} />
+                    ) : (
+                      "Mark As Done"
+                    )}
+                  </button>
+                  <button onClick={() => updateSubtaskStage(sub.id, 'In Progress')}>
+                    {loading ? (
+                  <ClipLoader color="#ffffff" loading={loading} size={20} />
+                    ) : (
+                      "In Progress"
+                    )}
+                  </button>
                 </div>
               </div>
             })}

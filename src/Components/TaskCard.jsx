@@ -14,8 +14,6 @@ export default function TaskCard({ startDate, title, team, priority, id }) {
     const [menuVisible, setMenuVisible] = useState(false);
     const [updateId, setupdateId] = useState(null);
 
-    console.log(selectedTaskId);
-
     const toggleMenu = () => {
         setSelectedTaskId(id);
         setMenuVisible(!menuVisible);
@@ -37,8 +35,6 @@ export default function TaskCard({ startDate, title, team, priority, id }) {
         if (confirmDelete) {
             try {
                 await deleteDoc(doc(firestore, 'tasks', selectedTaskId));
-
-
                 setTasks((prevTasks) => prevTasks.filter(task => task.id !== selectedTaskId));
 
                 alert('Task deleted successfully!');
@@ -84,13 +80,15 @@ export default function TaskCard({ startDate, title, team, priority, id }) {
                 </div>
                 <div className="addSubTask" >
                     <button
-                    style={{cursor: role == 'admin' ? 'pointer' : 'not-allowed'}}
+                        style={{ cursor: role == 'admin' ? 'pointer' : 'not-allowed' }}
                         disabled={role != 'admin' ? true : false}
                         onClick={handleAddSubtaskClick}><i className="fa-solid fa-plus"></i>ADD SUBTASK</button>
                 </div>
                 <div className="cardMenu" style={{ display: menuVisible ? 'flex' : 'none' }}>
-                    <button style={{color:'blue'}} className="cardMenuEdit" onClick={handleEdit}>Edit</button>
-                    <button style={{color:'red'}} className="cardMenuDel" onClick={handleDelete}>Delete</button>
+                    <Link to={`/task-detail?id=${id}`} style={{ color: 'blue', textDecoration: 'none', marginBottom: '20px' }} className="cardMenuEdit" >View</Link>
+                    {role == 'admin' && (
+                        <button style={{ color: 'red' }} className="cardMenuDel" onClick={handleDelete}>Delete</button>
+                    )}
                 </div>
             </div>
 

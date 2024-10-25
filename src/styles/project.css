@@ -16,3 +16,10 @@
     flex-wrap: wrap;
     gap: 2%;
 }
+@media (max-width:1250px) {
+    .projects {
+        max-width: calc(100% - 18%);
+        margin: 100px 0 0 18%;
+        padding-inline: 15px;
+    }
+}
