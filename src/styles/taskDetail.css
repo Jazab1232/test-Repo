@@ -7,6 +7,37 @@
 
 }
 
+.taskDetailTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-right: 20px;
+
+}
+
+.editTaskBtn,
+.editBtn {
+    width: fit-content;
+    height: 40px;
+    padding: 10px 20px;
+    background-color: #3663EB;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.editTaskBtn:hover {
+    background-color: #358DEB;
+}
+
+.editBtn:hover {
+    background-color: #358DEB;
+}
+
 .taskDetailContainer {
     background-color: #fff;
     display: flex;
@@ -32,7 +63,7 @@
 .taskDetail h2 {
     font-size: 25px;
     font-weight: 600;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
 }
 
 .taskStatus {
@@ -85,16 +116,50 @@
     margin-top: 40px;
 }
 
-.taskTeam>p {
-    font-size: 16px;
+.taskTeamTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.taskTeamTop p {
+    display: flex;
+    font-size: 20px;
     opacity: .8;
     font-weight: 700;
+    gap: 20px;
+}
+
+.taskTeamTop p span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000;
+    color: white;
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    border-radius: 50%;
+
 }
 
 .teamMember {
     border-top: 1px solid rgba(0, 0, 0, 0.144);
-    padding: 10px;
+    padding: 10px 0px 10px 10px ;
     margin-top: 20px;
+}
+
+.teamMember .delBtn {
+    background-color: #be1c1c;
+    color: white;
+    width: fit-content;
+    height: 30px;
+    grid-row: 1/3;
+    grid-column: 2/3;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .teamMember p:nth-child(1) {
@@ -133,10 +198,11 @@
     opacity: 1;
 }
 
-.subTaskCard{
+.subTaskCard {
     border-top: 1px solid rgba(0, 0, 0, 0.186);
-    padding-top: 20px ;
+    padding-top: 20px;
 }
+
 .subTaskCard div:first-child {
     display: flex;
     align-items: center;
@@ -184,11 +250,13 @@
     margin-bottom: 20px;
     font-size: 20px;
 }
-.subtaskTitle{
+
+.subtaskTitle {
     font-weight: 600;
     /* font-size: 14px; */
     margin-top: 20px;
 }
-.completeTaskBtnContainer{
+
+.completeTaskBtnContainer {
     margin-top: 20px;
 }

@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../styles/addProject.css';
 import { AppContext } from '../Components/context/AppContext.jsx';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 import { ClipLoader } from 'react-spinners';
+import AddMember2 from './AddMember2.jsx';
 
-export default function AddProject({ ShowAddProject, setShowAddProject }) {
+export default function AddProject({ ShowAddProject, setShowAddProject, currentProject, projectId, currentTeam, edit }) {
     const [loading, setLoading] = useState(false)
     const [projectName, setProjectName] = useState('');
     const [companyName, setCompanyName] = useState('');
@@ -13,11 +14,25 @@ export default function AddProject({ ShowAddProject, setShowAddProject }) {
     const [priority, setPriority] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [editedProject, setEditedProject] = useState(currentProject);
+
     const { teamMembers, setTeamMembers, projects, setProjects } = useContext(AppContext);
 
+    console.log(selectedTeam);
+
+    useEffect(() => {
+        if (currentProject && Object.keys(currentProject).length !== 0) {
+            setEditedProject(currentProject);
+            setProjectName(currentProject.projectName || "");
+            setCompanyName(currentProject.companyName || "");
+            setSelectedTeam(currentProject.selectedTeam || []);
+            setPriority(currentProject.priority || "");
+            setStartDate(currentProject.startDate || "");
+            setEndDate(currentProject.endDate || "");
+        }
+    }, [currentProject]);
     function handleTeam(e) {
         const selectedValues = [...e.target.selectedOptions].map(option => option.value);
-
         setSelectedTeam((prev) => {
             const updatedOptions = [...prev];
             selectedValues.forEach(value => {
@@ -63,6 +78,54 @@ export default function AddProject({ ShowAddProject, setShowAddProject }) {
             alert('Error adding Project');
         }
     };
+    console.log(projects);
+
+
+    const handleEdit = async (e) => {
+        e.preventDefault();
+        const newProject = {
+            projectName,
+            selectedTeam,
+            companyName,
+            priority,
+            startDate,
+            endDate,
+            id: projectId
+        }
+        const projectData = doc(firestore, "projects", projectId);
+        try {
+            setLoading(true)
+            await updateDoc(projectData, {
+                projectName,
+                selectedTeam,
+                companyName,
+                priority,
+                startDate,
+                endDate,
+                id: projectId
+            });
+            setProjects((prev) => {
+                const updatedProject = prev.filter((project) => {
+                    return project.id != projectId
+                })
+                return [...updatedProject, newProject]
+            })
+            console.log('projects', projects);
+
+            alert('Project updated successfully!');
+            setProjectName('')
+            setCompanyName('')
+            setSelectedTeam([])
+            setPriority('')
+            setStartDate('')
+            setEndDate('')
+            setLoading(false)
+            setShowAddProject(false)
+        } catch (error) {
+            console.error('Error updating project:', error);
+        }
+    };
+
 
     function handleCancel() {
         setProjectName('')
@@ -73,10 +136,23 @@ export default function AddProject({ ShowAddProject, setShowAddProject }) {
         setEndDate('')
         setShowAddProject(false)
     }
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+
+    // useEffect(() => {
+    //     document.body.style.overflow = "hidden";
+    //     return () => {
+    //         document.body.style.overflow = "auto";
+    //     };
+    // }, []);
 
     return (
         <div className='addProject' style={{ display: ShowAddProject ? 'flex' : 'none' }}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={currentProject ? handleEdit : handleSubmit}>
                 <div className="addProjectContainer">
                     <h3>Add Project</h3>
                     <div className="addTitle">
@@ -98,19 +174,13 @@ export default function AddProject({ ShowAddProject, setShowAddProject }) {
                             value={companyName}
                             onChange={(e) => setCompanyName(e.target.value)} />
                     </div>
-                    <div className="addProjectMember">
+                    <div className="addProjectMember" style={{ display: edit ? 'none' : 'inline-block' }}>
                         <p>Assign Project To:</p>
-                        {/* <span>{selectedTeam.join(', ')}</span> */}
-                        <select
-                            required
-                            value={selectedTeam}
-                            onChange={handleTeam}
-                        >
-                            <option value="">Select Team</option>
-                            {teamMembers.map((member, index) => (
-                                <option key={index} value={member.id}>{member.fullName}</option>
-                            ))}
-                        </select>
+                        <AddMember2
+                            setSelectedTeam={setSelectedTeam}
+                            currentTeam={currentTeam}
+                            selectedTeam={selectedTeam} />
+
                     </div>
 
                     <div className="addProjectPriority">
@@ -151,7 +221,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject }) {
 
                     <div className="addProjectBtn">
                         <button onClick={handleCancel}>Cancel</button>
-                        <button type='submit'> {loading ? (
+                        <button type='submit' > {loading ? (
                             <ClipLoader color="#ffffff" loading={loading} size={20} />
                         ) : (
                             "Submit"

@@ -1,0 +1,64 @@
+.addMember {
+    background-color: #fff;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.151);
+    height: fit-content;
+    border: 1px solid rgba(0, 0, 0, 0.454);
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.addMember .team-selector {
+    position: relative;
+    display: inline-block;
+}
+
+.addMember .dropdown-toggle {
+    padding: 0px 16px;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
+    border-radius: 4px;
+    font-size: 16px;
+    min-width: fit-content;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#dropdownToggle:hover {
+    background-color: #fff;
+}
+
+.addMember .dropdown-menu {
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 8px;
+    width: 100%;
+}
+
+.addMember .checkbox-label {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.addMember.selected-members {
+    margin-top: 16px;
+    font-size: 14px;
+}
+.addMember .addBtn{
+    background-color: #3460E3;
+    margin-top: 20px;
+}

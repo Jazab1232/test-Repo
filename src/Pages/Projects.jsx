@@ -9,10 +9,10 @@ export default function Projects() {
     const [ShowAddProject, setShowAddProject] = useState(false)
     const { projects, teamMembers } = useContext(AppContext);
     const { currentUserUid, setCurrentUserUid } = useContext(AuthContext);
-
     const currenUserProjects = projects.filter((projects) => {
         return projects.selectedTeam.includes(currentUserUid)
     })
+
 
     let role;
     let currentUserRole = teamMembers.find((member) => {

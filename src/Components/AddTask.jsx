@@ -1,20 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react'
 import '../styles/addTask.css'
 import { AppContext } from '../Components/context/AppContext.jsx';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 import { ClipLoader } from 'react-spinners';
+import AddMember2 from './AddMember2.jsx';
 
-export default function AddTask({ ShowAddTask, setShowAddTask }) {
+export default function AddTask({ edit, currentTask, taskId, projectId, currentTeam }) {
     const [loading, setLoading] = useState(false)
-    const { projects, teamMembers, tasks, setTasks, selectedTaskId } = useContext(AppContext);
+    const { projects, teamMembers, tasks, setTasks, selectedTaskId, ShowAddTask, setShowAddTask } = useContext(AppContext);
     const [title, setTitle] = useState('');
     const [selectedTeam, setSelectedTeam] = useState([]);
     const [priority, setPriority] = useState('');
-    const [project, setProject] = useState('');
+    // const [project, setProject] = useState('');
     const [stage, setStage] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [editedTask, setEditedTask] = useState(currentTask);
 
 
     const handleSubmit = async (e) => {
@@ -23,7 +25,7 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
         const newTask = {
             title,
             selectedTeam,
-            projectId: project,
+            projectId: projectId,
             priority,
             startDate,
             stage,
@@ -39,7 +41,6 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
             alert('Task added successfully!');
             setTitle('');
             setEndDate('');
-            setProject('');
             setSelectedTeam([]);
             setPriority('');
             setStage('');
@@ -51,11 +52,61 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
             alert('Error adding Task');
         }
     };
+    const handleEdit = async (e) => {
+        e.preventDefault();
+        const newTask = {
+            title,
+            selectedTeam,
+            projectId: projectId,
+            priority,
+            startDate,
+            stage,
+            endDate,
+            id: taskId
+        };
+
+        try {
+            const TaskData = doc(firestore, "tasks", taskId);
+            setLoading(true);
+            await updateDoc(TaskData, {
+                title,
+                selectedTeam,
+                projectId,
+                priority,
+                startDate,
+                stage,
+                endDate,
+                id: taskId
+            });
+
+            setTasks((prev) => {
+                return prev.map((task) =>
+                    task.id === taskId ? { ...task, ...newTask } : task
+                );
+            });
+
+            alert('Task Updated successfully!');
+
+            setTitle('');
+            setEndDate('');
+            setSelectedTeam([]);
+            setPriority('');
+            setStage('');
+            setStartDate('');
+            setShowAddTask(false);
+
+        } catch (error) {
+            console.error('Error adding Task:', error);
+            alert('Error adding Task');
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     function handleCancel() {
         setTitle('');
         setEndDate('');
-        setProject('');
         setSelectedTeam([]);
         setPriority('');
         setStage('');
@@ -63,31 +114,28 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
         setShowAddTask(false);
     }
 
-    function handleTeam(e) {
-        const selectedValues = [...e.target.selectedOptions].map(option => option.value);
 
-        setSelectedTeam((prev) => {
-            const updatedOptions = [...prev];
-            selectedValues.forEach(value => {
-                if (updatedOptions.includes(value)) {
-                    const index = updatedOptions.indexOf(value);
-                    updatedOptions.splice(index, 1);
-                } else {
-                    updatedOptions.push(value);
-                }
-            });
-            return updatedOptions;
-        });
-    }
+    useEffect(() => {
+        if (currentTask && Object.keys(currentTask).length !== 0) {
+            setEditedTask(currentTask);
+            setTitle(currentTask.title || "");
+            // setProject(currentTask.projectId || "");
+            setSelectedTeam(currentTask.selectedTeam || []);
+            setPriority(currentTask.priority || "");
+            setStage(currentTask.stage || "");
+            setStartDate(currentTask.startDate || "");
+            setEndDate(currentTask.endDate || "");
+        }
+    }, [currentTask]);
 
 
     return (
         <div className='addTask' style={{ display: ShowAddTask ? 'flex' : 'none' }}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={currentTask ? handleEdit : handleSubmit}>
                 <div className="addTaskContainer">
-                    <h3>Add Task</h3>
+                    <h3>{edit ? 'Edit Task' : 'Add Task'} </h3>
                     <div className="addTitle">
-                        <p>Add Task</p>
+                        <p>{edit ? 'Edit' : 'Add'} Task</p>
                         <input
                             required
                             type="text"
@@ -95,33 +143,13 @@ export default function AddTask({ ShowAddTask, setShowAddTask }) {
                             value={title}
                             onChange={(e) => { setTitle(e.target.value) }} />
                     </div>
-                    <div className="addTaskProject">
-                        <p>Select Project</p>
-                        <select
-                            required
-                            value={project}
-                            onChange={(e) => { setProject(e.target.value) }} >
-                            <option value="">Select Project</option>
-                            {projects.map((project, index) => (
-                                <option key={project.id} value={project.id}>{project.projectName}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="addTaskMember">
+
+                    <div className="addTaskMember" style={{ display: edit ? 'none' : 'inline-block' }}>
                         <p>Assign Task To: </p>
-                        {/* <span> {selectedTeam.join(', ')}</span> */}
-
-                        <select
-                            // multiple
-                            required
-                            value={selectedTeam}
-                            onChange={handleTeam} >
-                            <option value="">Select Team</option>
-                            {teamMembers.map((member, index) => (
-                                <option key={index} value={member.id}>{member.fullName}</option>
-                            ))}
-                        </select>
-
+                        <AddMember2
+                            setSelectedTeam={setSelectedTeam}
+                            selectedTeam={selectedTeam}
+                            currentTeam={currentTeam} />
                     </div>
                     <div className="addTaskStage">
                         <p>Task Stage:</p>

@@ -62,7 +62,7 @@ export default function Login() {
                         required
                     />
                 </div>
-                <button onClick={handleLogin} type="submit">
+                <button onClick={handleLogin} type="submit" className='loginBtn'>
                     {loading ? (
                         <ClipLoader color="#ffffff" loading={loading} size={20} />
                     ) : (

@@ -53,6 +53,6 @@ button {
     font-size: 1rem;
 }
 
-button:hover {
+.loginBtn:hover {
     background-color: #17343c;
 }

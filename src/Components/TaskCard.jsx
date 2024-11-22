@@ -70,12 +70,12 @@ export default function TaskCard({ startDate, title, team, priority, id }) {
                     <p>{startDate}</p>
                 </div>
             </div>
-            <div className="cardExtraInfo">
+            {/* <div className="cardExtraInfo">
                 <p><i className="fa-regular fa-message"></i>{team}</p>
                 <p><i className="fa-solid fa-paperclip"></i>3</p>
                 <p><i className="fa-solid fa-list-ul"></i>1/2</p>
-            </div>
-            <div className="subTask">
+            </div> */}
+            {/* <div className="subTask">
                 <div className="subTaskDate">
                 </div>
                 <div className="addSubTask" >
@@ -90,7 +90,7 @@ export default function TaskCard({ startDate, title, team, priority, id }) {
                         <button style={{ color: 'red' }} className="cardMenuDel" onClick={handleDelete}>Delete</button>
                     )}
                 </div>
-            </div>
+            </div> */}
 
             {showAddSubtask && selectedTaskId === id && (
                 <AddSubTask taskId={id} />

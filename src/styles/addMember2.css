@@ -1,0 +1,53 @@
+.AddMember2 {
+    position: relative;
+    display: flex;
+}
+
+.dropdown-toggle {
+    background-color: #fff;
+    color: #000000;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.293);
+    margin-top: 10px;
+    height: 35px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 100%;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    overflow-y: scroll;
+}
+
+.AddMember2 .checkbox-label {
+    display: flex;
+    padding: 11px 0;
+    justify-content: flex-start;
+    font-size: 14px;
+    cursor: pointer;
+    align-items: center;
+    height: 16px;
+    gap: 10px;
+}
+
+.AddMember2 .checkbox-label input {
+    margin-right: 0px;
+    width: auto;
+}

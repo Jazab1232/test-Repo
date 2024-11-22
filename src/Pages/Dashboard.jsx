@@ -57,14 +57,14 @@ export default function Dashboard() {
           <h2>DASHBOARD</h2>
           <div className="summaryBox">
             <SummaryCard
-              title="TOTAL TASK"
+              title="TOTAL PROJECTS"
               quantity={role == 'admin' ? tasks.length : currenUserTask.length}
               prevQuantity={20}
               Icon={AllTaskIcon}
               backgroundColor={'#2C4FD8'}
             />
             <SummaryCard
-              title="COMPLTED TASK"
+              title="COMPLTED "
               quantity={role == 'admin' ? completedTask.length : currenUserCompletedTask.length}
               prevQuantity={7}
               Icon={ClipboardCheckIcon}
@@ -103,6 +103,7 @@ export default function Dashboard() {
                         companyName={data.companyName}
                         priority={data.priority}
                         dueDate={data.endDate}
+                        width={'32%'}
                       />
                     ))
                   ) :
@@ -115,9 +116,7 @@ export default function Dashboard() {
             </div>
 
 
-
-
-            <div className="taskCardContainer">
+            {/* <div className="taskCardContainer">
               <h3>ALL TASKS</h3>
               <div className="dashTaskBox">
                 {
@@ -140,7 +139,7 @@ export default function Dashboard() {
               </div>
 
 
-            </div>
+            </div> */}
           </div>
         </>
       )}

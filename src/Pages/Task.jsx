@@ -11,8 +11,7 @@ export default function Task() {
     const currenUserTask = tasks.filter((task) => {
         return task.selectedTeam.includes(currentUserUid)
     })
-    console.log(currenUserTask);
-    
+
     let role;
     let currentUserRole = teamMembers.find((member) => {
         return member.uid == currentUserUid
@@ -86,7 +85,7 @@ export default function Task() {
                     )
                 }
             </div>
-            <AddTask ShowAddTask={ShowAddTask} setShowAddTask={setShowAddTask} />
+            <AddTask ShowAddTask={ShowAddTask} setShowAddTask={setShowAddTask}  />
         </div>
     );
 }

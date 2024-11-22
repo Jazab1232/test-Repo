@@ -39,7 +39,7 @@ export default function Teams() {
               <th>SR No.</th>
               <th>Fullname</th>
               <th>Email</th>
-              <th>Role</th>
+              <th>Designation</th>
               <th>Action</th>
             </tr>
           </thead>

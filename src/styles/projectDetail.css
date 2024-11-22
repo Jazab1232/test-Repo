@@ -1,6 +1,6 @@
 .projectDetail {
-    max-width: calc(100% - 20%);
-    margin: 100px 0 0 20%;
+    max-width: calc(100% - 15%);
+    margin: 100px 0 0 15%;
     box-sizing: border-box;
     padding-inline: 15px;
 }
@@ -12,10 +12,28 @@
     padding: 30px;
 }
 
-.projectDetailTitle {
+.detailInput {
+    border: none;
+    outline: none;
+    transition: border 0.3s ease;
+    width: fit-content;
+    border-radius: 5px;
+    height: fit-content;
     font-size: 20px;
     font-weight: 700;
-    margin-top: 20px;
+    padding: 10px 20px 10px 0px;
+    border: 1px solid #ffffff;
+}
+
+.detailInput:focus {
+    border: 1px solid #000000;
+    outline: none;
+}
+
+.projectDetailTitle {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 10px;
 }
 
 .projectCompanyName {
@@ -36,7 +54,6 @@
 .projectDetail h2 {
     font-size: 25px;
     font-weight: 600;
-    margin-bottom: 40px;
 }
 
 .projectStatus {
@@ -69,7 +86,7 @@
 
 .projectDate {
     opacity: .8;
-    margin: 40px 0;
+    margin: 10px 0;
     color: black;
 }
 
@@ -90,6 +107,33 @@
     margin-top: 40px;
 }
 
+.projectTeamTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.projectTeamTop p {
+    display: flex;
+    font-size: 20px;
+    opacity: .8;
+    font-weight: 700;
+    gap: 20px;
+}
+
+.projectTeamTop p span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000cc;
+    color: white;
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    border-radius: 50%;
+
+}
+
 .projectTeam>p {
     font-size: 16px;
     opacity: .8;
@@ -98,7 +142,7 @@
 
 .teamMember {
     border-top: 1px solid rgba(0, 0, 0, 0.144);
-    padding: 10px;
+    padding: 10px 0px 10px 10px;
     margin-top: 20px;
 }
 
@@ -112,14 +156,10 @@
     font-weight: 600;
 }
 
-.projectTasks {
-    margin-top: 40px;
-    gap: 20px;
-}
-
 .projectTask {
     margin-top: 40px;
     gap: 20px;
+    border-bottom: 0;
 }
 
 .projectTask>div:nth-child(1) {
@@ -128,13 +168,29 @@
     align-items: center;
     margin-bottom: 20px;
 }
+
 .projectTaskTitle {
-margin-top: 15px;
+    margin-top: 15px;
 }
+
 .projectTask>div:nth-child(1) p {
-    font-size: 18px;
+    font-size: 20px;
     opacity: .8;
     font-weight: 700;
+    display: flex;
+    gap: 20px;
+}
+
+.projectTask>div:nth-child(1) p span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: hwb(0 0% 100% / 0.799);
+    color: white;
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    border-radius: 50%;
 }
 
 .projectTask>div span {
@@ -145,6 +201,11 @@ margin-top: 15px;
     opacity: 1;
 }
 
+.projectTaskCard {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.194);
+    margin-bottom: 20px;
+}
+
 .projectTaskCard div:first-child {
     display: flex;
     align-items: center;
@@ -152,7 +213,6 @@ margin-top: 15px;
 }
 
 .projectTaskCard div:first-child p {
-
     opacity: .8;
 }
 

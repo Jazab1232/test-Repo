@@ -30,12 +30,12 @@
 }
 
 .projectCardContainer {
-    width: 33%;
+    width: 100%;
 }
-
-.taskCardContainer {
-    width: 65%;
-    /* margin-top: 20px; */
+.dashProjectBox{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .dashTaskBox {

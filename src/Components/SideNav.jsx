@@ -53,7 +53,7 @@ export default function SideNav() {
                     </>
                 )}
             </NavLink>
-            <NavLink
+            {/* <NavLink
                 to={'/task'}
                 className={({ isActive }) => (isActive ? 'navLink active' : 'navLink')}
             >
@@ -112,7 +112,7 @@ export default function SideNav() {
                         To Do
                     </>
                 )}
-            </NavLink>
+            </NavLink> */}
             <NavLink
                 to={'/team'}
                 style={{display:role == 'admin' ? 'flex': 'none'}}

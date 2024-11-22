@@ -1,14 +1,19 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import '../styles/taskDetail.css'
 import { useLocation } from 'react-router-dom';
 import { AppContext } from '../Components/context/AppContext.jsx';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../Components/config/config';
 import ClipLoader from "react-spinners/ClipLoader";
+import { EditIcon } from '../Components/Icons.jsx';
+import AddMember from '../Components/AddMember.jsx';
+import AddTask from '../Components/AddTask.jsx';
+import AddTaskMember from '../Components/AddTaskMember.jsx';
 
 export default function TaskDetail() {
   const [loading, setLoading] = useState(false)
-  const { tasks, setTasks, subtasks, projects, teamMembers, setSubtasks } = useContext(AppContext);
+  const [showAddTeam, setShowAddTeam] = useState(false)
+  const { tasks, setTasks, subtasks, projects, teamMembers, setSubtasks, ShowAddTask, setShowAddTask } = useContext(AppContext);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const taskId = queryParams.get('id');
@@ -19,41 +24,35 @@ export default function TaskDetail() {
     </div>
   }
 
-  let currentTask = tasks.find((task) => {
-    return task.id == taskId
-  })
-  const currentSubtasks = subtasks.filter((sub) => {
-    return sub.taskId == taskId
-  })
-  const currentTeam = currentTask.selectedTeam.map((id) => {
-    const currentMember = teamMembers.find((member) => {
-      return member.id == id;
+  let currentTask = useMemo(() => {
+    return tasks.find((task) => {
+      return task.id == taskId
+    })
+  }, [tasks, taskId])
+
+
+  const currentTeam = useMemo(() => {
+    return currentTask.selectedTeam.map((id) => {
+      const currentMember = teamMembers.find((member) => {
+        return member.id == id;
+      });
+      return currentMember || null;
     });
-    return currentMember;
-  });
 
+  }, [currentTask, teamMembers]);
 
-  const updateSubtaskStage = async (subtaskId, newStage) => {
-    setLoading(true)
-    try {
-      const subtaskDoc = doc(firestore, 'subtasks', subtaskId);
-      await updateDoc(subtaskDoc, { stage: newStage }); // Update stage in Firestore
+  const currentTeamId = currentTeam.map((member) => {
+    return member.id
+  })
+  console.log('currentTaskTeam', currentTeamId);
 
-      // Update the local state with the new stage
-      setSubtasks(prevSubtasks => prevSubtasks.map(sub => {
-        if (sub.id === subtaskId) {
-          return { ...sub, stage: newStage };
-        }
-        return sub;
-      }));
+  const currentproject = projects.find((project) => {
+    return project.id == currentTask.projectId
+  })
 
-      alert(`Subtask marked as ${newStage}`);
-      setLoading(false)
-    } catch (error) {
-      console.error('Error updating subtask stage:', error);
-      alert('Error updating subtask stage');
-    }
-  };
+  const currentProjectTeam = currentproject.selectedTeam
+  console.log('currentprojectTeam', currentProjectTeam);
+
 
   async function completeTask(newStage) {
     setLoading(true)
@@ -78,10 +77,12 @@ export default function TaskDetail() {
   }
 
 
-
   return (
     <div className='taskDetail'>
-      <h2>Task Details</h2>
+      <div className="taskDetailTop">
+        <h2>Task Details</h2>
+        <button className='editTaskBtn editBtn' onClick={() => { setShowAddTask(!ShowAddTask) }}><EditIcon /> Edit Task </button>
+      </div>
       <div className="taskDetailContainer">
         <div >
           <div className="taskStatus">
@@ -92,19 +93,26 @@ export default function TaskDetail() {
             <p className='detailTaskTitle'>{currentTask.title}</p>
             <p><span>Created At: </span>{currentTask.startDate}</p>
           </div>
-          <div className="taskAttachement">
-            <p><span>Team: </span>{currentTeam.length}</p>
-            <span>|</span>
-            <p><span>Sub-Task: </span>{currentSubtasks.length}</p>
-          </div>
           <div className="taskTeam">
-            <p>TASK TEAM</p>
-            {currentTeam.map((member, i) => {
+            <div className="taskTeamTop">
+              <p>TASK TEAM  <span>{currentTeam.length}</span></p>
+              <button className=' editBtn' onClick={() => { setShowAddTeam(!showAddTeam) }}><i className="fa-solid fa-plus"></i> Add Member</button>
+            </div>
+            <AddTaskMember
+              currentProjectTeam={currentProjectTeam}
+              showAddTeam={showAddTeam}
+              setShowAddTeam={setShowAddTeam}
+              currentTeam={currentTeamId}
+              taskId={taskId}
+              currentTask={currentTask}
+              />
+            {currentTeam.length != 0 ? (currentTeam.map((member, i) => {
               return <div key={i} className="teamMember">
                 <p>{member.fullName}</p>
                 <p>{member.role}</p>
               </div>
-            })}
+            }))
+              : ''}
             <div className="completeTaskBtnContainer">
               <button className="completeTaskBtn" onClick={() => { completeTask('completed') }}>
                 {loading ? (
@@ -116,40 +124,7 @@ export default function TaskDetail() {
               </button>
             </div>
           </div>
-          <div className="subTask">
-            <div>
-              <p>SUB TASK </p>
-              {/* <span style={{ opacity: '1' }}>50.00%</span> */}
-            </div>
-            {currentSubtasks.map((sub) => {
-              return <div className="subTaskCard">
-                <div>
-                  <p style={{ fontSize: '14px' }}>Created at: {sub.startDate}</p>
-                  <span>{sub.stage}</span>
-                </div>
-                <div className="subtaskTitle">
-                  <p>{sub.subtaskTitle}</p>
-                </div>
-                <div className="subTaskAddBtn">
-                  <button 
-                  onClick={() => updateSubtaskStage(sub.id, 'Completed')}>
-                    {loading ? (
-                  <ClipLoader color="#ffffff" loading={loading} size={20} />
-                    ) : (
-                      "Mark As Done"
-                    )}
-                  </button>
-                  <button onClick={() => updateSubtaskStage(sub.id, 'In Progress')}>
-                    {loading ? (
-                  <ClipLoader color="#ffffff" loading={loading} size={20} />
-                    ) : (
-                      "In Progress"
-                    )}
-                  </button>
-                </div>
-              </div>
-            })}
-          </div>
+
         </div>
         <div className='taskDesc'>
           <h2>TASK DESCRIPTION</h2>
@@ -158,6 +133,10 @@ export default function TaskDetail() {
             elements</p>
         </div>
       </div>
+      <AddTask edit={true}  currentTask={currentTask} taskId={taskId} projectId={currentTask.projectId} />
     </div>
+
   )
 }
+
+
