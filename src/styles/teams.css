@@ -23,6 +23,10 @@
     font-weight: 700;
     cursor: pointer;
 }
+.teamHeader p:hover {
+    background-color: #488DEB;
+
+}
 
 .teamHeader h2 {
     font-size: 25px;

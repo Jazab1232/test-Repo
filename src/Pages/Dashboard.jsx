@@ -16,8 +16,6 @@ export default function Dashboard() {
 
 
   const completedProjects = projects.filter((project) => {
-    console.log('project', project);
-
     return project.IsComplete == 'completed'
   })
   const ongoingProjects = projects.filter((project) => {
@@ -34,12 +32,6 @@ export default function Dashboard() {
     return project.selectedTeam.includes(currentUserUid)
   })
 
-
-
-
-  const currenUserTask = tasks.filter((task) => {
-    return task.selectedTeam.includes(currentUserUid)
-  })
   let role;
   let currentUserRole = teamMembers.find((member) => {
     return member.uid == currentUserUid

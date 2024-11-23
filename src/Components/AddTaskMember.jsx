@@ -4,18 +4,18 @@ import { AppContext } from './context/AppContext';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 import { Bounce, toast } from 'react-toastify';
+import { ClipLoader } from 'react-spinners';
 
 export default function AddMember({ showAddTeam, taskId, setShowAddTeam, currentTeam, currentTask, currentProjectTeam, projectId }) {
     const { projects, setProjects, teamMembers, tasks, setTasks } = useContext(AppContext);
     const [selectedTaskMembers, setSelectedTaskMembers] = useState(currentTeam);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [loading, setLoading] = useState(false)
 
-    console.log('currentTeam', currentTeam);
 
     const TeamForTask = teamMembers.filter((member) =>
         currentProjectTeam.includes(member.id)
     );
-    // console.log('TeamForTask', TeamForTask);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -29,6 +29,7 @@ export default function AddMember({ showAddTeam, taskId, setShowAddTeam, current
     };
 
     const handleTeamEdit = async () => {
+        setLoading(true)
         const TaskData = doc(firestore, "tasks", taskId);
 
         try {
@@ -51,6 +52,7 @@ export default function AddMember({ showAddTeam, taskId, setShowAddTeam, current
                 theme: "colored",
                 transition: Bounce,
             });
+            setLoading(false)
             setShowAddTeam(false)
         } catch (error) {
             toast.warn('Failed to edit team member', {
@@ -64,6 +66,7 @@ export default function AddMember({ showAddTeam, taskId, setShowAddTeam, current
                 theme: "colored",
                 transition: Bounce,
             });
+            setLoading(false)
             setShowAddTeam(false)
         }
     };
@@ -93,7 +96,12 @@ export default function AddMember({ showAddTeam, taskId, setShowAddTeam, current
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
 
                 <button className='addBtn' onClick={() => { setShowAddTeam(!showAddTeam) }}  >Cancel</button>
-                <button className='addBtn' onClick={handleTeamEdit} >Edit</button>
+                <button className='addBtn' onClick={handleTeamEdit} >
+                    {loading ? (
+                        <ClipLoader color="#ffffff" loading={loading} size={20} />
+                    ) : (
+                        "Edit"
+                    )}</button>
 
             </div>
         </div>

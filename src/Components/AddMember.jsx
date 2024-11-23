@@ -4,25 +4,45 @@ import { AppContext } from './context/AppContext';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 import { Bounce, toast } from 'react-toastify';
+import { ClipLoader } from 'react-spinners';
 
-export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, currentProject, projectId }) {
+export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, currentProject, projectId, currentProjectTask }) {
     const { projects, setProjects, teamMembers, tasks, setTasks } = useContext(AppContext);
     const [selectedMembers, setSelectedMembers] = useState(currentProject.selectedTeam);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [loading, setLoading] = useState(false)
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
     const handleCheckboxChange = (memberId) => {
+        if (currentProject.selectedTeam.includes(memberId)) {
+            const isMemberInTasks = currentProjectTask.find(
+                (task) => task.selectedTeam.includes(memberId)
+            );
+            if (isMemberInTasks) {
+                toast.error('Cannot remove member. They are assigned to one or more tasks.', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "colored",
+                    transition: Bounce,
+                });
+                return;
+            }
+        }
         setSelectedMembers((prevState) =>
             prevState.includes(memberId)
                 ? prevState.filter((id) => id !== memberId)
                 : [...prevState, memberId]
         );
     };
-    console.log('currentTeam', selectedMembers);
 
     const handleTeamEdit = async () => {
+        setLoading(true)
         const projectData = doc(firestore, "projects", projectId);
 
         try {
@@ -44,6 +64,7 @@ export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, cu
                 theme: "colored",
                 transition: Bounce,
             });
+            setLoading(false)
             setShowAddTeam(false)
         } catch (error) {
             toast.warn('Error updating team :', error, {
@@ -57,6 +78,7 @@ export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, cu
                 theme: "colored",
                 transition: Bounce,
             });
+            setLoading(false)
             setShowAddTeam(false)
         }
     };
@@ -85,9 +107,14 @@ export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, cu
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
 
                 <button className='addBtn' onClick={() => { setShowAddTeam(!showAddTeam) }}  >Cancel</button>
-                <button className='addBtn' onClick={handleTeamEdit} >Edit</button>
+                <button className='addBtn' onClick={handleTeamEdit} >
+                    {loading ? (
+                        <ClipLoader color="#ffffff" loading={loading} size={20} />
+                    ) : (
+                        "Edit"
+                    )}</button>
 
             </div>
-        </div>
+        </div >
     )
 }

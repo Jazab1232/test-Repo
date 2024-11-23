@@ -5,12 +5,15 @@ import { AppContext } from '../Components/context/AppContext.jsx';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { firestore } from './config/config.js';
 import { AuthContext } from './context/AuthContext.jsx';
+import { toast } from 'react-toastify';
+import { ClipLoader } from 'react-spinners';
 
 export default function ProjectCard({ projectName, priority, dueDate, companyName, width, id }) {
 
     const { setSelectedTaskId, selectedTaskId, projects, setProjects, teamMembers } = useContext(AppContext);
     const { currentUserUid, setCurrentUserUid } = useContext(AuthContext);
     const [menuVisible, setMenuVisible] = useState(false);
+    const [loading, setLoading] = useState(false)
 
     const toggleMenu = () => {
         setSelectedTaskId(id);
@@ -18,13 +21,34 @@ export default function ProjectCard({ projectName, priority, dueDate, companyNam
     };
 
     async function deleteProject(id) {
+
         try {
+            setLoading(true)
             await deleteDoc(doc(firestore, 'projects', id));
             setProjects((prevTasks) => prevTasks.filter(task => task.id !== id));
-            alert('Project deleted successfully!');
+            toast.success('Project deleted successfully!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            setLoading(false)
         } catch (error) {
-            console.error('Error deleting Project:', error);
-            alert('Error deleting Project');
+            toast.success('Error deleting Project', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            setLoading(false)
         }
 
     }
@@ -63,9 +87,14 @@ export default function ProjectCard({ projectName, priority, dueDate, companyNam
                 <p><i className="fa-solid fa-plus" style={{ marginRight: '10px' }} ></i>ADD TASK</p>
             </div> */}
             <div className="cardMenu" style={{ display: menuVisible ? 'flex' : 'none' }}>
-                <button style={{ color: 'blue' }} className="cardMenuEdit">View</button>
+                {/* <button style={{ color: 'blue' }} className="cardMenuEdit">View</button> */}
                 {role == 'admin' && (
-                    <button style={{ color: 'red' }} className="cardMenuDel" onClick={() => { deleteProject(id) }}>Delete</button>
+                    <button style={{ color: 'red' }} className="cardMenuDel" onClick={() => { deleteProject(id) }}>
+                        {loading ? (
+                            <ClipLoader color="red" loading={loading} size={20} />
+                        ) : (
+                            "Delete"
+                        )}</button>
                 )}
             </div>
         </div>

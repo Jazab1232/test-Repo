@@ -6,25 +6,66 @@ import { AuthContext } from '../Components/context/AuthContext';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { firestore } from '../Components/config/config.js';
 import { ClipLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
 
 export default function Teams() {
 
   const [loading, setLoading] = useState(false)
   const [showAddTeam, setShowAddTeam] = useState(false);
-  const { teamMembers, setTeamMembers } = useContext(AppContext);
+  const { teamMembers, setTeamMembers, projects } = useContext(AppContext);
+
+
+
 
   async function handleDelete(id) {
+    const currentUserProjects = projects.filter((project) => {
+      return project.selectedTeam.includes(id);
+    });
+
+    if (currentUserProjects.length > 0) {
+      toast.error('Cannot delete member. Member is assigned to one or more tasks.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+
     try {
-      setLoading(true)
+      setLoading(true);
       await deleteDoc(doc(firestore, 'users', id));
       setTeamMembers((prevMembers) => prevMembers.filter(member => member.uid !== id));
-      alert('Member deleted successfully!');
-      setLoading(false)
+      toast.success('Member deleted successfully!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } catch (error) {
-      console.error('Error deleting member:', error);
-      alert('Error deleting member');
+      toast.error('Error deleting member. Please try again later.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } finally {
+      setLoading(false);
     }
   }
+
 
   return (
     <div className='teams'>

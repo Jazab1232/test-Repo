@@ -22,7 +22,6 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
 
     const { teamMembers, setTeamMembers, projects, setProjects } = useContext(AppContext);
 
-    console.log(selectedTeam);
 
     useEffect(() => {
         if (currentProject && Object.keys(currentProject).length !== 0) {
@@ -35,21 +34,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
             setEndDate(currentProject.endDate || "");
         }
     }, [currentProject]);
-    function handleTeam(e) {
-        const selectedValues = [...e.target.selectedOptions].map(option => option.value);
-        setSelectedTeam((prev) => {
-            const updatedOptions = [...prev];
-            selectedValues.forEach(value => {
-                if (updatedOptions.includes(value)) {
-                    const index = updatedOptions.indexOf(value);
-                    updatedOptions.splice(index, 1);
-                } else {
-                    updatedOptions.push(value);
-                }
-            });
-            return updatedOptions;
-        });
-    }
+   
     const handleSubmit = async (e) => {
         e.preventDefault();
         const projectId = crypto.randomUUID();

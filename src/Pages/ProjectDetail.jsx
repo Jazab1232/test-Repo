@@ -28,8 +28,7 @@ export default function ProjectDetail() {
     let currentUserRole = teamMembers.find((member) => {
         return member.uid == currentUserUid
     })
-    console.log(currentUserRole.role);
-    
+
     const currentProject = useMemo(() => {
         return projects.find((project) => project.id === projectId);
     }, [projectId, projects]);
@@ -44,6 +43,7 @@ export default function ProjectDetail() {
     const currentProjectTask = useMemo(() => {
         return tasks.filter((task) => task.projectId === projectId);
     }, [tasks, projectId]);
+
 
 
     // const markAsDone = async (taskId, newStage) => {
@@ -91,7 +91,8 @@ export default function ProjectDetail() {
                             setShowAddTeam={setShowAddTeam}
                             currentTeam={currentTeam}
                             currentProject={currentProject}
-                            projectId={projectId} />
+                            projectId={projectId}
+                            currentProjectTask={currentProjectTask} />
 
                         {currentTeam.map((member) => (
                             <div className="teamMember" key={member.id}>

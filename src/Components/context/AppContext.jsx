@@ -14,7 +14,7 @@ export const AppProvider = ({ children }) => {
     const [ShowAddTask, setShowAddTask] = useState(false);
     const [userRole, setUserRole] = useState(null);
     const [loading, setLoading] = useState(true);
-console.log(teamMembers);
+
 
     useEffect(() => {
         const fetchTeamMembers = async () => {
