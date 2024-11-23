@@ -28,6 +28,8 @@ export default function ProjectDetail() {
     let currentUserRole = teamMembers.find((member) => {
         return member.uid == currentUserUid
     })
+    console.log(currentUserRole.role);
+    
     const currentProject = useMemo(() => {
         return projects.find((project) => project.id === projectId);
     }, [projectId, projects]);
@@ -64,7 +66,7 @@ export default function ProjectDetail() {
         <div className='projectDetail'>
             <div className="taskDetailTop">
                 <h2>Project Details</h2>
-                <button className='editTaskBtn editBtn' onClick={() => { setShowAddProject(!ShowAddProject) }} style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }} ><EditIcon /> Edit Project </button>
+                <button className='editTaskBtn editBtn' onClick={() => { setShowAddProject(!ShowAddProject) }} style={{ display: currentUserRole.role != 'admin' ? 'none' : 'flex' }} ><EditIcon /> Edit Project </button>
             </div>
             <div className="projectDetailContainer">
                 <div>
@@ -81,7 +83,7 @@ export default function ProjectDetail() {
                     <div className="projectTeam" style={{ position: 'relative' }}>
                         <div className="projectTeamTop">
                             <p>PROJECT TEAM  <span>{currentTeam.length}</span></p>
-                            <button onClick={() => { setShowAddTeam(!showAddTeam) }} className=' editBtn' style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }} ><EditIcon /> Edit Team</button>
+                            <button onClick={() => { setShowAddTeam(!showAddTeam) }} className=' editBtn' style={{ display: currentUserRole.role != 'admin' ? 'none' : 'flex' }} ><EditIcon /> Edit Team</button>
                         </div>
 
                         <AddMember
@@ -101,7 +103,7 @@ export default function ProjectDetail() {
                     <div className="projectTask">
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <p>TASKS <span>{currentProjectTask.length}</span></p>
-                            <button className='editBtn' onClick={() => { setShowAddTask(true) }} style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }} ><i className="fa-solid fa-plus"></i> Add Task</button>
+                            <button className='editBtn' onClick={() => { setShowAddTask(true) }} style={{ display: currentUserRole.role == 'admin' ? 'flex' : 'none' }} ><i className="fa-solid fa-plus"></i> Add Task</button>
                         </div>
                         {currentProjectTask.map((task) => (
                             <div className="projectTaskCard" key={task.id}>

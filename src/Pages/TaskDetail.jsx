@@ -106,7 +106,7 @@ export default function TaskDetail() {
     <div className='taskDetail'>
       <div className="taskDetailTop">
         <h2>Task Details</h2>
-        <button className='editTaskBtn editBtn' onClick={() => { setShowAddTask(!ShowAddTask) }} style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }}><EditIcon /> Edit Task </button>
+        <button className='editTaskBtn editBtn' onClick={() => { setShowAddTask(!ShowAddTask) }} style={{ display: currentUserRole.role != 'admin' ? 'none' : 'flex' }}><EditIcon /> Edit Task </button>
       </div>
       <div className="taskDetailContainer">
         <div >
@@ -121,7 +121,7 @@ export default function TaskDetail() {
           <div className="taskTeam">
             <div className="taskTeamTop">
               <p>TASK TEAM  <span>{currentTeam.length}</span></p>
-              <button className=' editBtn' onClick={() => { setShowAddTeam(!showAddTeam) }} style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }}><i className="fa-solid fa-plus"></i> Add Member</button>
+              <button className=' editBtn' onClick={() => { setShowAddTeam(!showAddTeam) }} style={{ display: currentUserRole.role != 'admin' ? 'none' : 'flex' }}><i className="fa-solid fa-plus"></i> Add Member</button>
             </div>
             <AddTaskMember
               currentProjectTeam={currentProjectTeam}
