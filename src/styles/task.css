@@ -26,6 +26,10 @@
      cursor: pointer;
  }
 
+ .addtaskBtn p:hover {
+     background-color: #488DEB;
+ }
+
  .task h2 {
      font-size: 25px;
      font-weight: 600;
@@ -81,12 +85,12 @@
      border-radius: 50%;
  }
 
-@media (max-width:1250px) {
-    .task {
-        max-width: calc(100% - 18%);
-        margin: 100px 0 0 18%;
-        box-sizing: border-box;
-        padding-inline: 15px;
-        padding-bottom: 80px;
-    }
-}
+ @media (max-width:1250px) {
+     .task {
+         max-width: calc(100% - 18%);
+         margin: 100px 0 0 18%;
+         box-sizing: border-box;
+         padding-inline: 15px;
+         padding-bottom: 80px;
+     }
+ }

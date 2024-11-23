@@ -5,6 +5,7 @@ import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 import { ClipLoader } from 'react-spinners';
 import AddMember2 from './AddMember2.jsx';
+import { Bounce, toast } from 'react-toastify';
 
 export default function AddTask({ edit, currentTask, taskId, projectId, currentTeam }) {
     const [loading, setLoading] = useState(false)
@@ -38,7 +39,17 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
             setTasks((prev) => {
                 return [...prev, newTask]
             })
-            alert('Task added successfully!');
+            toast.success('Task added successfully!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
             setTitle('');
             setEndDate('');
             setSelectedTeam([]);
@@ -48,8 +59,18 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
             setShowAddTask(false);
             setLoading(false)
         } catch (error) {
-            console.error('Error adding Task:', error);
-            alert('Error adding Task');
+            toast.warn('Error adding Task:', error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+
         }
     };
     const handleEdit = async (e) => {
@@ -84,8 +105,17 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
                     task.id === taskId ? { ...task, ...newTask } : task
                 );
             });
-
-            alert('Task Updated successfully!');
+            toast.success('Task Updated successfully!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
 
             setTitle('');
             setEndDate('');
@@ -94,10 +124,21 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
             setStage('');
             setStartDate('');
             setShowAddTask(false);
+            setLoading(false);
 
         } catch (error) {
-            console.error('Error adding Task:', error);
-            alert('Error adding Task');
+            toast.warn('Error adding Task:', error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            setLoading(false);
         } finally {
             setLoading(false);
         }

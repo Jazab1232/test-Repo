@@ -58,7 +58,12 @@
     margin-top: 16px;
     font-size: 14px;
 }
-.addMember .addBtn{
+
+.addMember .addBtn {
     background-color: #3460E3;
+    margin-top: 20px;
+}
+.addMember .addBtn:hover {
+    background-color: #488DEB;
     margin-top: 20px;
 }

@@ -4,6 +4,8 @@ import ProjectCard from '../Components/ProjectCard.jsx';
 import AddProject from '../Components/AddProject.jsx';
 import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from '../Components/context/AuthContext.jsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Projects() {
     const [ShowAddProject, setShowAddProject] = useState(false)

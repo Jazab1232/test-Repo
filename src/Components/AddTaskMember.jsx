@@ -3,8 +3,9 @@ import '../styles/addMember.css'
 import { AppContext } from './context/AppContext';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
+import { Bounce, toast } from 'react-toastify';
 
-export default function AddMember({ showAddTeam, taskId, setShowAddTeam, currentTeam, currentTask,currentProjectTeam, projectId }) {
+export default function AddMember({ showAddTeam, taskId, setShowAddTeam, currentTeam, currentTask, currentProjectTeam, projectId }) {
     const { projects, setProjects, teamMembers, tasks, setTasks } = useContext(AppContext);
     const [selectedTaskMembers, setSelectedTaskMembers] = useState(currentTeam);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -38,11 +39,32 @@ export default function AddMember({ showAddTeam, taskId, setShowAddTeam, current
                 })
                 return [...remainingtask, { ...currentTask, selectedTeam: selectedTaskMembers }]
             })
-            alert('Team member edited successfully');
+            // alert('Team member edited successfully');
+            toast.success('Team  edited successfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
             setShowAddTeam(false)
         } catch (error) {
-            console.error('Error editing team members:', error);
-            alert('Failed to edit team member');
+            toast.warn('Failed to edit team member', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            setShowAddTeam(false)
         }
     };
 

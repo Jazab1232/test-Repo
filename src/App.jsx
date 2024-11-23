@@ -3,6 +3,7 @@ import Header from './Components/Header';
 import './App.css';
 import SideNav from './Components/SideNav';
 import { AppProvider } from './Components/context/AppContext';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Header />
         <SideNav />
         <Outlet />
+        <ToastContainer />
       </AppProvider>
     </>
   );

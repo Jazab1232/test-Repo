@@ -1,4 +1,4 @@
-.header{
+.header {
     height: 70px;
     width: 100%;
     background-color: #fff;
@@ -12,21 +12,28 @@
 
 }
 
-.logo{
+.logo {
     width: 150px;
 }
-.logo img{
+.logo:hover {
+    opacity: 1;
+}
+
+.logo img {
     width: 100%;
 }
-.navIcons{
+
+.navIcons {
     display: flex;
     gap: 20px;
     align-items: center;
 }
-.navIcons i{
-    font-size:  20px;
+
+.navIcons i {
+    font-size: 20px;
 }
-.profileIcon span{
+
+.profileIcon span {
     background-color: #3663EB;
     color: white;
     display: flex;
@@ -36,4 +43,18 @@
     height: 40px;
     border-radius: 50%;
     font-size: 20px;
+}
+
+.logout {
+    height: 40px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    background-color: #BE2423;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+.logout:hover{
+    background-color: #e14d4d;
 }

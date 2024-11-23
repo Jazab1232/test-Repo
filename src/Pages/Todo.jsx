@@ -31,10 +31,7 @@ export default function completed() {
   return (
     <div className='completed'>
       <h2>To Do</h2>
-      {/* <div className="taskHeader">
-        <p><span style={{ backgroundColor: '#3663EB' }}></span>Todo</p>
-        <i class="fa-solid fa-plus"></i>
-      </div> */}
+    
       <div className="completedContainer">
         {
           role !== 'admin' ? (

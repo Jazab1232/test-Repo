@@ -7,14 +7,35 @@ import DashTaskCard from '../Components/DashTaskCard'
 import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from '../Components/context/AuthContext.jsx';
 import { ClipLoader } from 'react-spinners';
+import { ToastContainer } from 'react-toastify';
 
 export default function Dashboard() {
   const { projects, teamMembers, tasks, loading } = useContext(AppContext);
   const { currentUserUid } = useContext(AuthContext);
 
+
+
+  const completedProjects = projects.filter((project) => {
+    console.log('project', project);
+
+    return project.IsComplete == 'completed'
+  })
+  const ongoingProjects = projects.filter((project) => {
+    return project.IsComplete == 'ongoing'
+  })
+
   const currenUserProjects = projects.filter((projects) => {
     return projects.selectedTeam.includes(currentUserUid)
   })
+  const userCompletedProjects = completedProjects.filter((project) => {
+    return project.selectedTeam.includes(currentUserUid)
+  })
+  const userOngoingProjects = projects.filter((project) => {
+    return project.selectedTeam.includes(currentUserUid)
+  })
+
+
+
 
   const currenUserTask = tasks.filter((task) => {
     return task.selectedTeam.includes(currentUserUid)
@@ -30,25 +51,7 @@ export default function Dashboard() {
     console.log('Role is undefined or object not loaded');
   }
 
-  const currenUserProgressTask = currenUserTask.filter((task) => {
-    return task.stage == 'inProgress'
-  })
-  const currenUserCompletedTask = currenUserTask.filter((task) => {
-    return task.stage == 'completed'
-  })
-  const currenUserTodoTask = currenUserTask.filter((task) => {
-    return task.stage == 'Todo'
-  })
-
-  const completedTask = tasks.filter((task) => {
-    return task.stage == 'completed'
-  })
-  const progressTask = tasks.filter((task) => {
-    return task.stage == 'inProgress'
-  })
-  const todoTask = tasks.filter((task) => {
-    return task.stage == 'Todo'
-  })
+  
 
   return (
     <div className='dashboard' >
@@ -58,32 +61,32 @@ export default function Dashboard() {
           <div className="summaryBox">
             <SummaryCard
               title="TOTAL PROJECTS"
-              quantity={role == 'admin' ? tasks.length : currenUserTask.length}
+              quantity={role == 'admin' ? projects.length : currenUserProjects.length}
               prevQuantity={20}
               Icon={AllTaskIcon}
               backgroundColor={'#2C4FD8'}
             />
             <SummaryCard
               title="COMPLTED "
-              quantity={role == 'admin' ? completedTask.length : currenUserCompletedTask.length}
+              quantity={role == 'admin' ? completedProjects.length : userCompletedProjects.length}
               prevQuantity={7}
               Icon={ClipboardCheckIcon}
               backgroundColor={'#37766E'}
             />
             <SummaryCard
               title="IN PROGRESS"
-              quantity={role == 'admin' ? progressTask.length : currenUserProgressTask.length}
+              quantity={role == 'admin' ? ongoingProjects.length : userOngoingProjects.length}
               prevQuantity={8}
               Icon={ProgressIcon}
               backgroundColor={'#EE9D1E'}
             />
-            <SummaryCard
+            {/* <SummaryCard
               title="TODOS"
               quantity={role == 'admin' ? todoTask.length : currenUserTodoTask.length}
               prevQuantity={5}
               Icon={SunIcon}
               backgroundColor={'#BE245D'}
-            />
+            /> */}
 
           </div>
           <div className="dashboardContainer">

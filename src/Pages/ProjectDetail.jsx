@@ -9,6 +9,9 @@ import { EditIcon } from '../Components/Icons.jsx';
 import AddMember from '../Components/AddMember.jsx';
 import AddTask from '../Components/AddTask.jsx';
 import AddProject from '../Components/AddProject.jsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from '../Components/context/AuthContext.jsx';
 
 export default function ProjectDetail() {
 
@@ -16,24 +19,19 @@ export default function ProjectDetail() {
     const [showAddTeam, setShowAddTeam] = useState(false)
     const [ShowAddProject, setShowAddProject] = useState(false)
     const { projects, teamMembers, tasks, setTasks, ShowAddTask, setShowAddTask } = useContext(AppContext);
+    const { currentUserUid } = useContext(AuthContext);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const projectId = queryParams.get('id');
 
 
+    let currentUserRole = teamMembers.find((member) => {
+        return member.uid == currentUserUid
+    })
     const currentProject = useMemo(() => {
         return projects.find((project) => project.id === projectId);
     }, [projectId, projects]);
 
-
-    console.log('currentProject', currentProject);
-    // if (currentProject.length === 0) {
-    //     return (
-    //         <div className='projectDetail'>
-    //             <p>No Data Found</p>
-    //         </div>
-    //     );
-    // }
 
     const currentTeam = useMemo(() => {
         return currentProject.selectedTeam.map((id) => {
@@ -66,14 +64,14 @@ export default function ProjectDetail() {
         <div className='projectDetail'>
             <div className="taskDetailTop">
                 <h2>Project Details</h2>
-                <button className='editTaskBtn editBtn' onClick={() => { setShowAddProject(!ShowAddProject) }}><EditIcon /> Edit Project </button>
+                <button className='editTaskBtn editBtn' onClick={() => { setShowAddProject(!ShowAddProject) }} style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }} ><EditIcon /> Edit Project </button>
             </div>
             <div className="projectDetailContainer">
                 <div>
                     <div className="projectStatus">
                         <div>
                             <p style={{ textTransform: 'uppercase' }}>{currentProject.priority} priority</p>
-                            <p><span></span>ONGOING</p>
+                            <p style={{ textTransform: 'uppercase' }}><span></span>{currentProject.IsComplete ? currentProject.IsComplete : 'ONGOING'}</p>
                         </div>
                     </div>
                     {/* <input className='detailInput' type="text" value={currentProject.projectName} /> */}
@@ -83,7 +81,7 @@ export default function ProjectDetail() {
                     <div className="projectTeam" style={{ position: 'relative' }}>
                         <div className="projectTeamTop">
                             <p>PROJECT TEAM  <span>{currentTeam.length}</span></p>
-                            <button onClick={() => { setShowAddTeam(!showAddTeam) }} className=' editBtn'><EditIcon /> Edit Team</button>
+                            <button onClick={() => { setShowAddTeam(!showAddTeam) }} className=' editBtn' style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }} ><EditIcon /> Edit Team</button>
                         </div>
 
                         <AddMember
@@ -103,7 +101,7 @@ export default function ProjectDetail() {
                     <div className="projectTask">
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <p>TASKS <span>{currentProjectTask.length}</span></p>
-                            <button className='editBtn' onClick={() => { setShowAddTask(true) }}><i className="fa-solid fa-plus"></i> Add Task</button>
+                            <button className='editBtn' onClick={() => { setShowAddTask(true) }} style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }} ><i className="fa-solid fa-plus"></i> Add Task</button>
                         </div>
                         {currentProjectTask.map((task) => (
                             <div className="projectTaskCard" key={task.id}>
@@ -152,7 +150,6 @@ export default function ProjectDetail() {
                 currentProject={currentProject}
                 projectId={projectId}
                 edit={true} />
-
         </div>
     );
 }

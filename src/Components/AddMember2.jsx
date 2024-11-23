@@ -21,7 +21,7 @@ export default function AddMember2({ setSelectedTeam, selectedTeam, currentTeam 
         setSelectedTeam(updatedMembers);
     };
 
-    const membersList = currentTeam != 'undefine' ? currentTeam : teamMembers;
+    const membersList = currentTeam !== undefined ? currentTeam : teamMembers;
 
     return (
         <div className='AddMember2' >

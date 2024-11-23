@@ -6,14 +6,16 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../Components/config/config';
 import ClipLoader from "react-spinners/ClipLoader";
 import { EditIcon } from '../Components/Icons.jsx';
-import AddMember from '../Components/AddMember.jsx';
 import AddTask from '../Components/AddTask.jsx';
 import AddTaskMember from '../Components/AddTaskMember.jsx';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
+import { AuthContext } from '../Components/context/AuthContext.jsx';
 
 export default function TaskDetail() {
   const [loading, setLoading] = useState(false)
   const [showAddTeam, setShowAddTeam] = useState(false)
   const { tasks, setTasks, subtasks, projects, teamMembers, setSubtasks, ShowAddTask, setShowAddTask } = useContext(AppContext);
+  const { currentUserUid } = useContext(AuthContext);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const taskId = queryParams.get('id');
@@ -23,6 +25,9 @@ export default function TaskDetail() {
       <p>No Task Found</p>
     </div>
   }
+  let currentUserRole = teamMembers.find((member) => {
+    return member.uid == currentUserUid
+  })
 
   let currentTask = useMemo(() => {
     return tasks.find((task) => {
@@ -68,11 +73,31 @@ export default function TaskDetail() {
           return task;
         })
       );
-      alert(`Task marked as ${newStage}`);
+      toast.success(`Task marked as ${newStage}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
       setLoading(false)
     } catch (error) {
-      console.error('Error updating task stage:', error);
-      alert('Error updating task stage');
+      toast.warn('Error updating task stage', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+      setLoading(false)
     }
   }
 
@@ -81,7 +106,7 @@ export default function TaskDetail() {
     <div className='taskDetail'>
       <div className="taskDetailTop">
         <h2>Task Details</h2>
-        <button className='editTaskBtn editBtn' onClick={() => { setShowAddTask(!ShowAddTask) }}><EditIcon /> Edit Task </button>
+        <button className='editTaskBtn editBtn' onClick={() => { setShowAddTask(!ShowAddTask) }} style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }}><EditIcon /> Edit Task </button>
       </div>
       <div className="taskDetailContainer">
         <div >
@@ -96,7 +121,7 @@ export default function TaskDetail() {
           <div className="taskTeam">
             <div className="taskTeamTop">
               <p>TASK TEAM  <span>{currentTeam.length}</span></p>
-              <button className=' editBtn' onClick={() => { setShowAddTeam(!showAddTeam) }}><i className="fa-solid fa-plus"></i> Add Member</button>
+              <button className=' editBtn' onClick={() => { setShowAddTeam(!showAddTeam) }} style={{ display: currentUserRole != 'admin' ? 'none' : 'inline-block' }}><i className="fa-solid fa-plus"></i> Add Member</button>
             </div>
             <AddTaskMember
               currentProjectTeam={currentProjectTeam}
@@ -105,7 +130,7 @@ export default function TaskDetail() {
               currentTeam={currentTeamId}
               taskId={taskId}
               currentTask={currentTask}
-              />
+            />
             {currentTeam.length != 0 ? (currentTeam.map((member, i) => {
               return <div key={i} className="teamMember">
                 <p>{member.fullName}</p>
@@ -133,7 +158,8 @@ export default function TaskDetail() {
             elements</p>
         </div>
       </div>
-      <AddTask edit={true}  currentTask={currentTask} taskId={taskId} projectId={currentTask.projectId} />
+      <AddTask edit={true} currentTask={currentTask} taskId={taskId} projectId={currentTask.projectId} />
+
     </div>
 
   )

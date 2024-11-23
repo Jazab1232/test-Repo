@@ -61,7 +61,16 @@ select {
     color: white;
     margin-top: 10px;
 }
+.addTaskBtn button:hover {
+    background-color: #488DEB;
+}
+
+.addTaskMember{
+
+    width: 100%;
+}
 
 .addTaskMember p span {
     font-weight: 700;
+    
 }

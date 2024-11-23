@@ -3,7 +3,7 @@ import '../styles/header.css'
 import logo from '../assets/logo.jpg'
 import { AuthContext } from './context/AuthContext';
 import { signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth } from './config/config';
 
 export default function Header() {
@@ -26,9 +26,9 @@ export default function Header() {
   
   return (
     <div className='header'>
-      <div className="logo">
+      <Link to={'/'} className="logo">
         <img src={logo} alt="logo" />
-      </div>
+      </Link>
       <div className="navIcons">
         {/* <i className="fa-regular fa-bell"></i> */}
         <div className="profileIcon">

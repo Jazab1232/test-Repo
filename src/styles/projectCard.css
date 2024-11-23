@@ -14,24 +14,35 @@
     padding-bottom: 10px;
 
 }
+.projectCardHead:hover {
+    opacity: .9;
+
+}
 .projectName{
     text-decoration: none;
     color: black;
 }
+
 .projectCard .projectName>p:first-child {
     font-weight: 700;
     font-size: 18px;
     text-decoration: none;
     color: black;
 }
-
+.projectCard .projectName>p:first-child:hover {
+    color: black;
+}
+rgba(0, 0, 0, 0.807)
 .projectCard .projectName>p:nth-child(2) {
     font-size: 16px;
     opacity: .8;
     text-decoration: none;
     color: blac
 }
-
+.projectName:hover{
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.837);
+}
 .projectStatus {
     display: flex;
     justify-content: space-between;

@@ -1,4 +1,3 @@
-/* Fullscreen container */
 .login-container {
     display: flex;
     justify-content: center;
@@ -10,7 +9,6 @@
     z-index: 1000;
 }
 
-/* Login box */
 .login-box {
     background-color: #ffffff;
     padding: 2rem;
@@ -21,7 +19,6 @@
     text-align: center;
 }
 
-/* Input group */
 .input-group {
     margin-bottom: 1.5rem;
     text-align: left;
@@ -41,10 +38,9 @@
     box-sizing: border-box;
 }
 
-/* Button styles */
 button {
     padding: 0.75rem 1.5rem;
-    background-color: #214252;
+    background-color: #3663EB;
     color: white;
     border: none;
     border-radius: 4px;
@@ -54,5 +50,16 @@ button {
 }
 
 .loginBtn:hover {
-    background-color: #17343c;
+    background-color: #488DEB;
+}
+
+.resetPassLink{
+    color: #3663EB;
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+.resetPassLink:hover{
+    color: #488DEB;
 }

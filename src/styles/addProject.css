@@ -62,6 +62,11 @@ select {
     margin-top: 10px;
 }
 
+.addProjectMember {
+
+    width: 100%;
+}
+
 .addProjectMember p span {
     font-weight: 700;
 }

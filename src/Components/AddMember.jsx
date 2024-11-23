@@ -3,6 +3,7 @@ import '../styles/addMember.css'
 import { AppContext } from './context/AppContext';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
+import { Bounce, toast } from 'react-toastify';
 
 export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, currentProject, projectId }) {
     const { projects, setProjects, teamMembers, tasks, setTasks } = useContext(AppContext);
@@ -32,11 +33,31 @@ export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, cu
                 })
                 return [...remainingProject, { ...currentProject, selectedTeam: selectedMembers }]
             })
-            alert('Team member added successfully');
+            toast.success('Team  updated successfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
             setShowAddTeam(false)
         } catch (error) {
-            console.error('Error updating team members:', error);
-            alert('Failed to add team member');
+            toast.warn('Error updating team :', error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            setShowAddTeam(false)
         }
     };
 

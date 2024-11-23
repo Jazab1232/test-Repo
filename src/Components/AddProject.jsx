@@ -5,6 +5,8 @@ import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 import { ClipLoader } from 'react-spinners';
 import AddMember2 from './AddMember2.jsx';
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddProject({ ShowAddProject, setShowAddProject, currentProject, projectId, currentTeam, edit }) {
     const [loading, setLoading] = useState(false)
@@ -14,6 +16,8 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
     const [priority, setPriority] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [IsComplete, setIsComplete] = useState('');
+
     const [editedProject, setEditedProject] = useState(currentProject);
 
     const { teamMembers, setTeamMembers, projects, setProjects } = useContext(AppContext);
@@ -64,7 +68,17 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
             setProjects((prev) => {
                 return [...prev, newProject]
             })
-            alert('Project added successfully!');
+            toast.success('Project added successfully!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
             setProjectName('')
             setCompanyName('')
             setSelectedTeam([])
@@ -74,11 +88,19 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
             setLoading(false)
             setShowAddProject(false)
         } catch (error) {
-            console.error('Error adding project:', error);
-            alert('Error adding Project');
+            toast.warn('Error adding project', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
         }
     };
-    console.log(projects);
 
 
     const handleEdit = async (e) => {
@@ -90,6 +112,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
             priority,
             startDate,
             endDate,
+            IsComplete,
             id: projectId
         }
         const projectData = doc(firestore, "projects", projectId);
@@ -102,6 +125,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
                 priority,
                 startDate,
                 endDate,
+                IsComplete,
                 id: projectId
             });
             setProjects((prev) => {
@@ -110,9 +134,17 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
                 })
                 return [...updatedProject, newProject]
             })
-            console.log('projects', projects);
-
-            alert('Project updated successfully!');
+            toast.success('Project updated successfully!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
             setProjectName('')
             setCompanyName('')
             setSelectedTeam([])
@@ -122,7 +154,17 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
             setLoading(false)
             setShowAddProject(false)
         } catch (error) {
-            console.error('Error updating project:', error);
+            toast.warn('Error updating project:', error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
         }
     };
 
@@ -195,6 +237,18 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
                             <option value="high">High</option>
                             <option value="medium">Medium</option>
                             <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <div className="addProjectPriority">
+                        <p>Project Stage:</p>
+                        <select
+                            required
+                            value={IsComplete}
+                            onChange={(e) => setIsComplete(e.target.value)}
+                        >
+                            <option value="">Select Stage</option>
+                            <option value="ongoing">On going</option>
+                            <option value="completed">Completed</option>
                         </select>
                     </div>
 
