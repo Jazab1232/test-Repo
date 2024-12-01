@@ -53,7 +53,7 @@ export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, cu
                 })
                 return [...remainingProject, { ...currentProject, selectedTeam: selectedMembers }]
             })
-            toast.success('Team  updated successfully', {
+            toast.success('Team  edited successfully', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -67,7 +67,7 @@ export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, cu
             setLoading(false)
             setShowAddTeam(false)
         } catch (error) {
-            toast.warn('Error updating team :', error, {
+            toast.error('Error Editing team :', error, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -86,7 +86,7 @@ export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, cu
 
     return (
         <div className='addMember' style={{ display: showAddTeam ? "block" : 'none' }}>
-            <h3 style={{ marginBottom: '10px' }}>Add a member</h3>
+            <h3 style={{ marginBottom: '10px' }}>Edit team </h3>
             <button type='button' onClick={toggleDropdown} className="dropdown-toggle" id='dropdownToggle'>
                 Select Team Members {isDropdownOpen ? <i class="fa-solid fa-chevron-up"></i> : <i class="fa-solid fa-chevron-down"></i>}
             </button>
@@ -111,7 +111,7 @@ export default function AddMember({ showAddTeam, setShowAddTeam, currentTeam, cu
                     {loading ? (
                         <ClipLoader color="#ffffff" loading={loading} size={20} />
                     ) : (
-                        "Edit"
+                        "Save"
                     )}</button>
 
             </div>

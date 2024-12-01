@@ -10,9 +10,7 @@ export const AuthProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
             setCurrentUserUid(user.uid)
-
         });
-
         return () => unsubscribe();
     }, []);
 

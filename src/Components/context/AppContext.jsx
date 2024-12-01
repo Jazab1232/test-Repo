@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, query } from 'firebase/firestore';
 import React, { createContext, useEffect, useState } from 'react';
 import { firestore } from '../config/config';
 
@@ -14,8 +14,21 @@ export const AppProvider = ({ children }) => {
     const [ShowAddTask, setShowAddTask] = useState(false);
     const [userRole, setUserRole] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [notifications, setNotifications] = useState([]);
 
+    
+    useEffect(() => {
+        const notificationsCollection = collection(firestore, 'userNotification');
+        const q = query(notificationsCollection); 
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const fetchedNotifications = snapshot.docs.map((doc) => doc.data());
+            setNotifications(fetchedNotifications);
+        });
 
+        return () => unsubscribe();
+    }, []);
+    
     useEffect(() => {
         const fetchTeamMembers = async () => {
             try {
@@ -89,7 +102,9 @@ export const AppProvider = ({ children }) => {
             showAddSubtask, setShowAddSubtask,
             selectedTaskId, setSelectedTaskId,
             ShowAddTask, setShowAddTask,
-            loading
+            loading,
+            notifications, setNotifications,
+            showNotifications, setShowNotifications
         }}>
             {children}
         </AppContext.Provider>

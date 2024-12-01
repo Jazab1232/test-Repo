@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import '../styles/addMember2.css'
 import { AppContext } from './context/AppContext';
 
-export default function AddMember2({ setSelectedTeam, selectedTeam, currentTeam }) {
+export default function AddMember2({ setSelectedTeam, selectedTeam, currentProject }) {
     const { projects, setProjects, teamMembers, tasks, setTasks } = useContext(AppContext);
     const [selectedMembers, setSelectedMembers] = useState(selectedTeam);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -11,17 +11,22 @@ export default function AddMember2({ setSelectedTeam, selectedTeam, currentTeam 
         setIsDropdownOpen(!isDropdownOpen);
     };
     const handleCheckboxChange = (memberId) => {
-        // Compute the updated members
         const updatedMembers = selectedMembers.includes(memberId)
             ? selectedMembers.filter((id) => id !== memberId)
             : [...selectedMembers, memberId];
 
-        // Update both states with the same value
         setSelectedMembers(updatedMembers);
         setSelectedTeam(updatedMembers);
     };
 
-    const membersList = currentTeam !== undefined ? currentTeam : teamMembers;
+    const currentProjectTeam = useMemo(() => {
+        if (!currentProject || !currentProject.selectedTeam) return [];
+        return currentProject.selectedTeam.map((id) =>
+            teamMembers.find((member) => member.id === id)
+        );
+    }, [currentProject, teamMembers]);
+
+    const membersList = currentProjectTeam.length>0 ? currentProjectTeam : teamMembers;
 
     return (
         <div className='AddMember2' >

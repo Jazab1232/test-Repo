@@ -29,7 +29,7 @@ export default function Login() {
             toast.success('Logged in successfully', { theme: 'colored', transition: Bounce });
             setTimeout(() => navigate('/dashboard'), 3000);
         } catch (error) {
-            toast.warn(`Error logging in: ${error.message}`, { theme: 'colored', transition: Bounce });
+            toast.error(`Error logging in: ${error.message}`, { theme: 'colored', transition: Bounce });
         } finally {
             setLoading(false);
         }

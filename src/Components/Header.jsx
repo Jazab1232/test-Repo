@@ -7,11 +7,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { auth } from './config/config';
 import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
+import { AppContext } from './context/AppContext';
 
 export default function Header() {
   const [loading, setLoading] = useState(false)
   let navigate = useNavigate()
   const { currentUser, setCurrentUser } = useContext(AuthContext);
+  const { showNotifications, setShowNotifications } = useContext(AppContext);
   const logout = async () => {
     try {
       setLoading(true)
@@ -19,6 +21,7 @@ export default function Header() {
       setCurrentUser(null);
       navigate('/login');
       setLoading(false)
+      setShowNotifications(false)
       toast.warn('You are logged out', {
         position: "top-right",
         autoClose: 5000,
@@ -56,10 +59,10 @@ export default function Header() {
         <img src={logo} alt="logo" />
       </Link>
       <div className="navIcons">
-        {/* <i className="fa-regular fa-bell"></i> */}
-        <div className="profileIcon">
+        <i class="fa-regular fa-bell" onClick={() => { setShowNotifications(!showNotifications) }} > </i>
+        <Link to={`/profile`} className="profileIcon">
           <span style={{ textTransform: 'capitalize' }}>{icon}</span>
-        </div>
+        </Link>
         <div className="logout" >
           <p style={{ cursor: 'pointer' }} onClick={logout}>
             {loading ? (

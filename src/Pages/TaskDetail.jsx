@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react'
 import '../styles/taskDetail.css'
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AppContext } from '../Components/context/AppContext.jsx';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../Components/config/config';
@@ -14,7 +14,7 @@ import { AuthContext } from '../Components/context/AuthContext.jsx';
 export default function TaskDetail() {
   const [loading, setLoading] = useState(false)
   const [showAddTeam, setShowAddTeam] = useState(false)
-  const { tasks, setTasks, subtasks, projects, teamMembers, setSubtasks, ShowAddTask, setShowAddTask } = useContext(AppContext);
+  const { tasks, setTasks, projects, teamMembers, ShowAddTask, setShowAddTask } = useContext(AppContext);
   const { currentUserUid } = useContext(AuthContext);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -106,7 +106,7 @@ export default function TaskDetail() {
     <div className='taskDetail'>
       <div className="taskDetailTop">
         <h2>Task Details</h2>
-        <button className='editTaskBtn editBtn' onClick={() => { setShowAddTask(!ShowAddTask) }} style={{ display: currentUserRole.role != 'admin' ? 'none' : 'flex' }}><EditIcon /> Edit Task </button>
+        <Link to={`/add-task?taskId=${taskId}`} className='editTaskBtn editBtn' onClick={() => { setShowAddTask(!ShowAddTask) }} style={{ display: currentUserRole.role != 'admin' ? 'none' : 'flex' }}><EditIcon /> Edit Task </Link>
       </div>
       <div className="taskDetailContainer">
         <div >
@@ -114,6 +114,14 @@ export default function TaskDetail() {
             <div>
               <p style={{ textTransform: 'uppercase' }}>{currentTask.priority} PRIORITY</p>
               <p style={{ textTransform: 'capitalize' }}><span></span>{currentTask.stage}</p>
+              <button className="completeTaskBtn" onClick={() => { completeTask('completed') }}>
+                {loading ? (
+                  <ClipLoader color="#ffffff" loading={loading} size={20} />
+                ) : (
+                  "Mark as complete"
+                )}
+
+              </button>
             </div>
             <p className='detailTaskTitle'>{currentTask.title}</p>
             <p><span>Created At: </span>{currentTask.startDate}</p>
@@ -139,26 +147,22 @@ export default function TaskDetail() {
             }))
               : ''}
             <div className="completeTaskBtnContainer">
-              <button className="completeTaskBtn" onClick={() => { completeTask('completed') }}>
-                {loading ? (
-                  <ClipLoader color="#ffffff" loading={loading} size={20} />
-                ) : (
-                  "Complete Task"
-                )}
 
-              </button>
             </div>
           </div>
 
         </div>
         <div className='taskDesc'>
           <h2>TASK DESCRIPTION</h2>
-          <p>Switches are a pleasant interface for toggling a value between two states,
-            and offer the same semantics and keyboard navigation as native checkbox
-            elements</p>
+          {currentTask.description != undefined
+            ? <div dangerouslySetInnerHTML={{ __html: currentTask.description }}></div>
+            : <p>Switches are a pleasant interface for toggling a value between two states,
+              and offer the same semantics and keyboard navigation as native checkbox
+              elements</p>
+          }
         </div>
       </div>
-      <AddTask edit={true} currentTask={currentTask} taskId={taskId} projectId={currentTask.projectId} />
+      {/* <AddTask edit={true} currentTask={currentTask} taskId={taskId} projectId={currentTask.projectId} /> */}
 
     </div>
 

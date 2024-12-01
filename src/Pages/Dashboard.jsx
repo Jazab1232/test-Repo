@@ -3,14 +3,13 @@ import '../styles/dashboard.css'
 import SummaryCard from '../Components/SummaryCard'
 import { AllTaskIcon, SunIcon, ClipboardCheckIcon, ProgressIcon, } from '../Components/Icons.jsx';
 import ProjectCard from '../Components/ProjectCard.jsx';
-import DashTaskCard from '../Components/DashTaskCard'
 import { AppContext } from '../Components/context/AppContext.jsx';
 import { AuthContext } from '../Components/context/AuthContext.jsx';
 import { ClipLoader } from 'react-spinners';
-import { ToastContainer } from 'react-toastify';
+import NotificationTab from '../Components/NotificationTab.jsx';
 
 export default function Dashboard() {
-  const { projects, teamMembers, tasks, loading } = useContext(AppContext);
+  const { projects, teamMembers, loading } = useContext(AppContext);
   const { currentUserUid } = useContext(AuthContext);
 
 
@@ -28,7 +27,7 @@ export default function Dashboard() {
   const userCompletedProjects = completedProjects.filter((project) => {
     return project.selectedTeam.includes(currentUserUid)
   })
-  const userOngoingProjects = projects.filter((project) => {
+  const userOngoingProjects = ongoingProjects.filter((project) => {
     return project.selectedTeam.includes(currentUserUid)
   })
 
@@ -39,11 +38,8 @@ export default function Dashboard() {
 
   if (currentUserRole && currentUserRole.role) {
     role = currentUserRole.role
-  } else {
-    console.log('Role is undefined or object not loaded');
   }
 
-  
 
   return (
     <div className='dashboard' >
@@ -54,32 +50,21 @@ export default function Dashboard() {
             <SummaryCard
               title="TOTAL PROJECTS"
               quantity={role == 'admin' ? projects.length : currenUserProjects.length}
-              prevQuantity={20}
               Icon={AllTaskIcon}
               backgroundColor={'#2C4FD8'}
             />
             <SummaryCard
               title="COMPLTED "
               quantity={role == 'admin' ? completedProjects.length : userCompletedProjects.length}
-              prevQuantity={7}
               Icon={ClipboardCheckIcon}
               backgroundColor={'#37766E'}
             />
             <SummaryCard
               title="IN PROGRESS"
               quantity={role == 'admin' ? ongoingProjects.length : userOngoingProjects.length}
-              prevQuantity={8}
               Icon={ProgressIcon}
               backgroundColor={'#EE9D1E'}
             />
-            {/* <SummaryCard
-              title="TODOS"
-              quantity={role == 'admin' ? todoTask.length : currenUserTodoTask.length}
-              prevQuantity={5}
-              Icon={SunIcon}
-              backgroundColor={'#BE245D'}
-            /> */}
-
           </div>
           <div className="dashboardContainer">
 
@@ -99,6 +84,7 @@ export default function Dashboard() {
                         priority={data.priority}
                         dueDate={data.endDate}
                         width={'32%'}
+                        IsComplete={data.IsComplete}
                       />
                     ))
                   ) :
@@ -144,6 +130,8 @@ export default function Dashboard() {
         </div>
       )
       }
+
+      <NotificationTab />
     </div>
   )
 }

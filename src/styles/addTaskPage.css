@@ -1,0 +1,71 @@
+.addTask{
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    max-width: calc(100% - 15%);
+    margin: 100px 20px 0 17%;
+    /* min-height: 100vh; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.addTask form {
+    width: 100%;
+    padding: 0;
+}
+.addTaskContainer h3{
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+.addTaskContainer p{
+    font-weight: 600;
+    margin: 20px 0 5px 0;
+}
+.addTask input {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.354);
+    padding: 0 10px;
+}
+.addTask select{
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.354);
+    padding: 0 10px;
+    margin: 0px 0px 20px 0px;
+}
+.addTaskDate{
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+.addTaskDate div{
+    width: 50%;
+}
+.addTaskSelect{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+}
+.addTaskSelect .addTaskStage{
+    width: 50%;
+}
+.addTaskSelect .addTaskPriority{
+    width: 50%;
+}
+.addTaskBtn{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    height: fit-content;
+    margin-top: 15px;
+}
+.addTaskBtn button{
+    width: fit-content;
+}

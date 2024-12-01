@@ -1,21 +1,40 @@
-.projects{
+.projects {
     max-width: calc(100% - 15%);
     /* min-height: calc(100vh - 70px);  */
     margin: 100px 0 0 15%;
     box-sizing: border-box;
     padding-inline: 15px;
     padding-bottom: 80px;
-    
+
 }
-.projects h2{
+
+.projects h2 {
     font-size: 25px;
     font-weight: 600;
 }
-.projectsContainer{
+
+.projectsContainer {
     display: flex;
     flex-wrap: wrap;
     gap: 2%;
 }
+
+.addProjectButton {
+    width: fit-content;
+    text-decoration: none;
+    height: 40px;
+    padding: 10px 20px;
+    background-color: #3663EB;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    gap: 10px;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+
 @media (max-width:1250px) {
     .projects {
         max-width: calc(100% - 18%);

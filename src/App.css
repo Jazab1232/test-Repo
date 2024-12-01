@@ -12,3 +12,13 @@ body {
     padding: 0;
     background-color: #F3F4F6;
 }
+.Toastify__toast{
+    display: flex;
+    justify-content: space-between;
+}
+.Toastify__toast-body{
+    width: 95%;
+}
+.Toastify__close-button{
+    width: 20px;
+}

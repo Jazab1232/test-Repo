@@ -17,8 +17,6 @@ export default function SideNav() {
   
     if (currentUserRole && currentUserRole.role) {
       role = currentUserRole.role
-    } else {
-      console.log('Role is undefined or object not loaded');
     }
   
     return (

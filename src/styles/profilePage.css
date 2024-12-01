@@ -1,0 +1,129 @@
+.profilePage {
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    max-width: calc(100% - 15%);
+    min-height: calc(100vh - 100px);
+    /* max-height: calc(100vh - 100px); */
+    margin: 100px 20px 0 17%;
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+    min-height: 100vh;
+    background-color: #ffffff;
+    font-family: 'Arial', sans-serif;
+}
+
+.profileContainer {
+    text-align: center;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    width: 350px;
+}
+
+.profileImageWrapper {
+    margin-bottom: 15px;
+}
+
+.profileImage {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #214252;
+}
+
+.profileDetails {
+    margin-top: 10px;
+}
+
+.profileName {
+    font-size: 24px;
+    color: #214252;
+    margin: 10px 0 5px;
+}
+
+.profileRole {
+    font-size: 18px;
+    color: #4a4a4a;
+    margin: 5px 0;
+    font-style: italic;
+}
+
+.profileEmail {
+    font-size: 16px;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+/* .profilePage {
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    max-width: calc(100% - 15%);
+    min-height: calc(100vh - 100px);
+    margin: 100px 20px 0 17%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    font-family: 'Arial', sans-serif;
+}
+
+.profileHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 10px;
+}
+
+.profilePicture {
+    margin-right: 30px;
+}
+
+.profileImg {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #4CAF50;
+}
+
+.profileInfo h1 {
+    margin: 0;
+    font-size: 2em;
+    color: #333;
+}
+
+.profileInfo .designation {
+    font-size: 1.2em;
+    color: #555;
+}
+
+.profileDetails {
+    background-color: #fff;
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profileDetails h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.profileDetails p {
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.6;
+}
+
+.userMail {
+    font-size: 1.2em;
+    color: #555;
+    margin: 5px 0;
+} */

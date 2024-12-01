@@ -23,7 +23,7 @@ export default function Teams() {
     });
 
     if (currentUserProjects.length > 0) {
-      toast.error('Cannot delete member. Member is assigned to one or more tasks.', {
+      toast.error('Cannot delete member. Member is assigned to  tasks or projects.', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

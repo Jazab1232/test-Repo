@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import '../styles/addProject.css';
 import { AppContext } from '../Components/context/AppContext.jsx';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { firestore } from './config/config';
 import { ClipLoader } from 'react-spinners';
 import AddMember2 from './AddMember2.jsx';
@@ -13,13 +13,12 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
     const [projectName, setProjectName] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [selectedTeam, setSelectedTeam] = useState([]);
+    const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [IsComplete, setIsComplete] = useState('');
-
     const [editedProject, setEditedProject] = useState(currentProject);
-
     const { teamMembers, setTeamMembers, projects, setProjects } = useContext(AppContext);
 
 
@@ -27,53 +26,93 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
         if (currentProject && Object.keys(currentProject).length !== 0) {
             setEditedProject(currentProject);
             setProjectName(currentProject.projectName || "");
+            setDescription(currentProject.description || "");
             setCompanyName(currentProject.companyName || "");
             setSelectedTeam(currentProject.selectedTeam || []);
+            setIsComplete(currentProject.IsComplete || "");
             setPriority(currentProject.priority || "");
             setStartDate(currentProject.startDate || "");
             setEndDate(currentProject.endDate || "");
         }
-    }, [currentProject]);
-   
+    }, [currentProject, ShowAddProject]);
+
+    const handleNotification = (async (team, projectId, message, projectName) => {
+        const randomId = crypto.randomUUID()
+        const notification = {
+            projectId,
+            message,
+            projectName,
+            team,
+            time: serverTimestamp(),
+        }
+        await setDoc(doc(firestore, 'userNotification', randomId), {
+            projectId,
+            message,
+            projectName,
+            team,
+            time: serverTimestamp(),
+        });
+        console.log('Member notify successfully');
+    })
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const projectId = crypto.randomUUID();
-        try {
-            setLoading(true)
-            const newProject = {
-                projectName,
-                selectedTeam,
-                companyName,
-                priority,
-                startDate,
-                endDate,
-                id: projectId
+
+        if (selectedTeam.length != 0) {
+            try {
+                setLoading(true)
+                const newProject = {
+                    projectName,
+                    selectedTeam,
+                    companyName,
+                    description,
+                    priority,
+                    startDate,
+                    endDate,
+                    id: projectId
+                }
+                await setDoc(doc(firestore, 'projects', projectId), newProject);
+                setProjects((prev) => {
+                    return [...prev, newProject]
+                })
+                handleNotification(selectedTeam, projectId, `You have assigned  a new Project`, projectName)
+                toast.success('Project added successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
+                setProjectName('')
+                setCompanyName('')
+                setSelectedTeam([])
+                setPriority('')
+                setStartDate('')
+                setStartDate('')
+                setDescription('')
+                setEndDate('')
+                setLoading(false)
+                setShowAddProject(false)
+            } catch (error) {
+                toast.warn('Error adding project', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
             }
-            await setDoc(doc(firestore, 'projects', projectId), newProject);
-            setProjects((prev) => {
-                return [...prev, newProject]
-            })
-            toast.success('Project added successfully!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-            setProjectName('')
-            setCompanyName('')
-            setSelectedTeam([])
-            setPriority('')
-            setStartDate('')
-            setEndDate('')
-            setLoading(false)
-            setShowAddProject(false)
-        } catch (error) {
-            toast.warn('Error adding project', {
+        } else {
+            toast.warn('Fill out all form fields', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -85,6 +124,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
                 transition: Bounce,
             });
         }
+
     };
 
 
@@ -94,6 +134,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
             projectName,
             selectedTeam,
             companyName,
+            description,
             priority,
             startDate,
             endDate,
@@ -107,6 +148,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
                 projectName,
                 selectedTeam,
                 companyName,
+                description,
                 priority,
                 startDate,
                 endDate,
@@ -135,6 +177,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
             setSelectedTeam([])
             setPriority('')
             setStartDate('')
+            setDescription('')
             setEndDate('')
             setLoading(false)
             setShowAddProject(false)
@@ -161,21 +204,25 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
         setPriority('')
         setStartDate('')
         setEndDate('')
+        setDescription('')
+        setLoading(false)
         setShowAddProject(false)
     }
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
+    useEffect(() => {
+        if (ShowAddProject) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
 
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [ShowAddProject]);
 
-    // useEffect(() => {
-    //     document.body.style.overflow = "hidden";
-    //     return () => {
-    //         document.body.style.overflow = "auto";
-    //     };
-    // }, []);
+    const todayDate = new Date().toISOString().split("T")[0];
+    
 
     return (
         <div className='addProject' style={{ display: ShowAddProject ? 'flex' : 'none' }}>
@@ -191,6 +238,15 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
                             value={projectName}
                             onChange={(e) => setProjectName(e.target.value)}
                         />
+                    </div>
+                    <div className="addTitle">
+                        <p>Add description</p>
+                        <input
+                            required
+                            type="text"
+                            placeholder='Add project description'
+                            value={description}
+                            onChange={(e) => { setDescription(e.target.value) }} />
                     </div>
                     <div className="addTitle">
                         <p>Company Name</p>
@@ -227,6 +283,8 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
                     <div className="addProjectPriority">
                         <p>Project Stage:</p>
                         <select
+                            id="projectStage"
+                            name="projectStage"
                             required
                             value={IsComplete}
                             onChange={(e) => setIsComplete(e.target.value)}
@@ -244,6 +302,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
                                 required
                                 type="date"
                                 value={startDate}
+                                min={todayDate}
                                 onChange={(e) => setStartDate(e.target.value)}
                             />
                         </div>
@@ -253,6 +312,7 @@ export default function AddProject({ ShowAddProject, setShowAddProject, currentP
                                 required
                                 type="date"
                                 value={endDate}
+                                min={todayDate}
                                 onChange={(e) => setEndDate(e.target.value)}
                             />
                         </div>

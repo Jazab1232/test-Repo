@@ -15,6 +15,7 @@
 .logo {
     width: 150px;
 }
+
 .logo:hover {
     opacity: 1;
 }
@@ -25,12 +26,22 @@
 
 .navIcons {
     display: flex;
-    gap: 20px;
+    gap: 30px;
     align-items: center;
 }
 
 .navIcons i {
-    font-size: 20px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.navIcons i:hover {
+    opacity: .8;
+
+}
+
+.profileIcon {
+    text-decoration: none;
 }
 
 .profileIcon span {
@@ -50,11 +61,12 @@
     padding: 10px 20px;
     display: flex;
     align-items: center;
-    background-color: #BE2423;
+    background-color: hsl(0, 69%, 44%);
     border-radius: 5px;
     color: white;
     cursor: pointer;
 }
-.logout:hover{
+
+.logout:hover {
     background-color: #e14d4d;
 }

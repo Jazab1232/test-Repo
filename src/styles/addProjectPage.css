@@ -1,0 +1,84 @@
+
+.addProjectPage {
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    max-width: calc(100% - 15%);
+    margin: 100px 20px 0 17%;
+    /* min-height: 100vh; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+.addProjectPage form {
+    width: 100%;
+    padding: 0;
+}
+
+.addProjectContainer {
+    width: 100%;
+    /* padding: 20px; */
+    border-radius: 8px;
+}
+.addProjectContainer h3{
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+.addProjectContainer p{
+    font-weight: 600;
+    margin: 20px 0 5px 0;
+}
+.addTaskMember{
+    width: 100%;
+}
+
+.addProjectContainer input{
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.354);
+    padding: 0 10px;
+}
+.addProjectContainer select{
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.354);
+    padding: 0 10px;
+    margin: 5px 0px 20px 0px;
+}
+.addProjectPriority{
+    margin-top: 15px;
+}
+.addProjectSelect{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+}
+.addProjectSelect .addProjectPriority{
+    width: 50%;
+}
+.addProjectDate{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+.addProjectDate div{
+    width: 50%;
+}
+.addProjectBtn{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    height: fit-content;
+    margin-top: 15px;
+}
+.addProjectBtn button{
+    width: fit-content;
+}

@@ -1,15 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
-import '../styles/addTask.css'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
+import '../styles/addTaskPage.css'
 import { AppContext } from '../Components/context/AppContext.jsx';
 import { doc, setDoc, updateDoc } from 'firebase/firestore';
-import { firestore } from './config/config';
+import { firestore } from '../Components/config/config.js';
 import { ClipLoader } from 'react-spinners';
-import AddMember2 from './AddMember2.jsx';
+import AddMember2 from '../Components/AddMember2.jsx';
 import { Bounce, toast } from 'react-toastify';
+import { Editor } from '@tinymce/tinymce-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-export default function AddTask({ edit, currentTask, taskId, projectId, currentTeam }) {
+export default function AddTaskPage({ }) {
     const [loading, setLoading] = useState(false)
-    const { projects, teamMembers, tasks, setTasks, selectedTaskId, ShowAddTask, setShowAddTask } = useContext(AppContext);
+    const { projects, tasks, setTasks, ShowAddTask, setShowAddTask } = useContext(AppContext);
     const [title, setTitle] = useState('');
     const [selectedTeam, setSelectedTeam] = useState([]);
     const [priority, setPriority] = useState('');
@@ -17,8 +19,27 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
     const [stage, setStage] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [editedTask, setEditedTask] = useState(currentTask);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const taskId = queryParams.get('taskId');
+    const projectId = queryParams.get('projectId');
+    const navigate = useNavigate()
 
+
+    const currentTask = useMemo(() => {
+        if (taskId) {
+            return tasks.find((task) => task.id === taskId);
+        }
+    }, [taskId, tasks, location]);
+
+    const currentProject = useMemo(() => {
+        if (projectId) {
+            return projects.find((project) => project.id === projectId);
+        }
+    }, [projectId, projects, location]);
+
+    console.log(taskId, currentTask);
+    console.log(projectId, currentProject);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,14 +48,14 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
             title,
             selectedTeam,
             description,
-            projectId: projectId,
+            projectId,
             priority,
             startDate,
             stage,
             endDate,
             id: taskId
         }
-        if (selectedTeam.length > 0) {
+        if (selectedTeam.length > 0 && description.length > 0) {
             try {
                 setLoading(true)
                 await setDoc(doc(firestore, 'tasks', taskId), newTask);
@@ -59,10 +80,12 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
                 setStage('');
                 setStartDate('');
                 setDescription('')
-                setShowAddTask(false);
                 setLoading(false)
+                navigate(-1)
             } catch (error) {
-                toast.warn('Error adding Task:', error, {
+                console.log(error);
+
+                toast.warn(`Error adding Task: ${error.message}`, {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -73,7 +96,7 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
                     theme: "colored",
                     transition: Bounce,
                 });
-
+                setLoading(false)
             }
         } else {
             toast.warn('Fill out all form fields', {
@@ -95,7 +118,7 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
             title,
             selectedTeam,
             description,
-            projectId: projectId,
+            projectId: currentTask.projectId,
             priority,
             startDate,
             stage,
@@ -109,7 +132,7 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
             await updateDoc(TaskData, {
                 title,
                 selectedTeam,
-                projectId,
+                projectId: currentTask.projectId,
                 priority,
                 description,
                 startDate,
@@ -144,7 +167,7 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
             setDescription('');
             setShowAddTask(false);
             setLoading(false);
-
+            navigate(-1)
         } catch (error) {
             toast.error('Error adding Task:', error, {
                 position: "top-right",
@@ -162,8 +185,6 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
             setLoading(false);
         }
     };
-
-
     function handleCancel() {
         setTitle('');
         setEndDate('');
@@ -172,16 +193,10 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
         setStage('');
         setStartDate('');
         setDescription('');
-        setLoading(false);
-        setShowAddTask(false);
     }
-
-
-    const todayDate = new Date().toISOString().split("T")[0];
 
     useEffect(() => {
         if (currentTask && Object.keys(currentTask).length !== 0) {
-            setEditedTask(currentTask);
             setTitle(currentTask.title || "");
             setDescription(currentTask.description || "");
             setSelectedTeam(currentTask.selectedTeam || []);
@@ -190,16 +205,20 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
             setStartDate(currentTask.startDate || "");
             setEndDate(currentTask.endDate || "");
         }
-    }, [currentTask, ShowAddTask]);
+    }, [currentTask]);
+
+
+
+    const todayDate = new Date().toISOString().split("T")[0];
 
 
     return (
         <div className='addTask' style={{ display: ShowAddTask ? 'flex' : 'none' }}>
             <form onSubmit={currentTask ? handleEdit : handleSubmit}>
                 <div className="addTaskContainer">
-                    <h3>{edit ? 'Edit Task' : 'Add Task'} </h3>
+                    <h3>{currentTask ? 'Edit Task' : 'Add Task'} </h3>
                     <div className="addTitle">
-                        <p>{edit ? 'Edit' : 'Add'} Task</p>
+                        <p>{currentTask ? 'Edit' : 'Add'} Task: </p>
                         <input
                             required
                             type="text"
@@ -208,45 +227,53 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
                             onChange={(e) => { setTitle(e.target.value) }} />
                     </div>
                     <div className="addTitle">
-                        <p>Add description</p>
-                        <input
-                            required
-                            type="text"
-                            placeholder='Add Task description'
+                        <p>Add description:</p>
+                        <Editor
+                            apiKey="n0a6gafqn6nr414ct18m5584ixlp0vbhspqav37g0ma3w0fu"
                             value={description}
-                            onChange={(e) => { setDescription(e.target.value) }} />
+                            init={{
+                                plugins: [
+                                    'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount'
+                                ],
+                                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                            }}
+                            onEditorChange={(newContent) => setDescription(newContent)}
+                        />
                     </div>
 
-                    <div className="addTaskMember" style={{ display: edit ? 'none' : 'inline-block' }}>
+                    <div className="addTaskMember" style={{ display: currentTask ? 'none' : 'inline-block' }}>
                         <p>Assign Task To: </p>
                         <AddMember2
                             setSelectedTeam={setSelectedTeam}
                             selectedTeam={selectedTeam}
-                            currentTeam={currentTeam} />
+                            currentProject={currentProject}
+                        />
                     </div>
-                    <div className="addTaskStage">
-                        <p>Task Stage:</p>
-                        <select
-                            required
-                            value={stage}
-                            onChange={(e) => { setStage(e.target.value) }}>
-                            <option value="">Select Task Stage</option>
-                            <option value="Todo">Todo</option>
-                            <option value="inProgress">In Progress</option>
-                        </select>
-                    </div>
-                    <div className="addTaskPriority">
-                        <p>Task Priority:</p>
-                        <select
-                            required
-                            value={priority}
-                            onChange={(e) => { setPriority(e.target.value) }} >
-                            <option value="">Select Priority</option>
-                            <option value="very high">Very High</option>
-                            <option value="high">High</option>
-                            <option value="medium">Medium</option>
-                            <option value="low">Low</option>
-                        </select>
+                    <div className='addTaskSelect'>
+                        <div className="addTaskStage">
+                            <p>Task Stage:</p>
+                            <select
+                                required
+                                value={stage}
+                                onChange={(e) => { setStage(e.target.value) }}>
+                                <option value="">Select Task Stage</option>
+                                <option value="Todo">Todo</option>
+                                <option value="inProgress">In Progress</option>
+                            </select>
+                        </div>
+                        <div className="addTaskPriority">
+                            <p>Task Priority:</p>
+                            <select
+                                required
+                                value={priority}
+                                onChange={(e) => { setPriority(e.target.value) }} >
+                                <option value="">Select Priority</option>
+                                <option value="very high">Very High</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
                     </div>
                     <div className="addTaskDate">
                         <div>
@@ -255,7 +282,7 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
                                 required
                                 type="date"
                                 value={startDate}
-                                min={todayDate}
+                                min={taskId ? startDate : todayDate}
                                 onChange={(e) => { setStartDate(e.target.value) }} />
                         </div>
                         <div>
@@ -264,12 +291,12 @@ export default function AddTask({ edit, currentTask, taskId, projectId, currentT
                                 required
                                 type="date"
                                 value={endDate}
-                                min={todayDate}
+                                min={taskId ? startDate : todayDate}
                                 onChange={(e) => { setEndDate(e.target.value) }} />
                         </div>
                     </div>
                     <div className="addTaskBtn">
-                        <button onClick={handleCancel}>Cancel</button>
+                        <button onClick={handleCancel}>Reset</button>
                         <button type='submit'>
                             {loading ? (
                                 <ClipLoader color="#ffffff" loading={loading} size={20} />

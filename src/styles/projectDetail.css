@@ -5,6 +5,12 @@
     padding-inline: 15px;
 }
 
+.addtaskBtn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .projectDetailContainer {
     background-color: #fff;
     display: flex;
@@ -31,9 +37,10 @@
 }
 
 .projectDetailTitle {
-    font-size: 22px;
+    font-size: 25px;
     font-weight: 700;
     margin-top: 10px;
+    text-transform: capitalize;
 }
 
 .projectCompanyName {
@@ -73,6 +80,14 @@
     border-radius: 15px;
     padding: 5px 10px;
     width: fit-content;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.projectStatus div p:nth-child(2) {
+
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .projectStatus div p:nth-child(2) span {
@@ -84,10 +99,18 @@
     margin-right: 5px;
 }
 
+
 .projectDate {
-    opacity: .8;
+    opacity: 1;
     margin: 10px 0;
     color: black;
+    font-weight: 600;
+}
+
+.projectDate span {
+    opacity: .8;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .projectAttachment {
@@ -111,12 +134,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .projectTeamTop p {
     display: flex;
-    font-size: 20px;
-    opacity: .8;
+    align-items: center;
+    font-size: 24px;
     font-weight: 700;
     gap: 20px;
 }
@@ -143,17 +167,18 @@
 .teamMember {
     border-top: 1px solid rgba(0, 0, 0, 0.144);
     padding: 10px 0px 10px 10px;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .teamMember p:nth-child(1) {
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .teamMember p:nth-child(2) {
     opacity: .9;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 14px;
 }
 
 .projectTask {
@@ -170,14 +195,29 @@
 }
 
 .projectTaskTitle {
-    margin-top: 15px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.projectTaskTitle button {
+    width: fit-content;
+    background-color: #BE2423;
+    color: white;
+    padding: 5px 10px;
+}
+
+.projectTaskTitle button:hover {
+    background-color: #E14D4D;
 }
 
 .projectTask>div:nth-child(1) p {
-    font-size: 20px;
-    opacity: .8;
+    font-size: 24px;
+    /* opacity: .8; */
     font-weight: 700;
     display: flex;
+    align-items: center;
     gap: 20px;
 }
 
@@ -202,23 +242,38 @@
 }
 
 .projectTaskCard {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.194);
-    margin-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.194);
+    margin-bottom: 10px;
 }
 
 .projectTaskCard div:first-child {
     display: flex;
     align-items: center;
     gap: 20px;
+    font-size: 14px;
+    margin-top: 10px;
 }
 
 .projectTaskCard div:first-child p {
     opacity: .8;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .projectTaskCard div:first-child span {
     background-color: #fcf7da;
     color: #DA792F;
+}
+
+.projectTaskLink {
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    color: black;
+    text-transform: capitalize;
+}
+
+.projectTaskLink:hover {
     opacity: .8;
 }
 
@@ -249,5 +304,6 @@
 
 .projectDesc h2 {
     margin-bottom: 20px;
-    font-size: 20px;
+    font-weight: 700;
+    font-size: 25px;
 }
